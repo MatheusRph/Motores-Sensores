@@ -257,4 +257,4 @@ void desacelerar() {
 
 // Volta em relação ao eixo:
 
-// Girara as rodas da direita na direção x e girara as rodas da esquerda na direção contrári
+// Girara as rodas da direita na direção x e girara as rodas da esquerda na direção contrária
