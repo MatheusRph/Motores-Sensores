@@ -40,13 +40,13 @@ const int maxVel = 150;
 // Definir os pinos do sensor de cor
 
 /* Inicializa com valores específicos de int time e ganho */
-Adafruit_TCS34725 tcsF = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_700MS, TCS34725_GAIN_1X); //Definição do primeiro sensor (Sensor da Frete)
+Adafruit_TCS34725 tcsF = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_600MS, TCS34725_GAIN_1X); //Definição do primeiro sensor (Sensor da Frete)
 
-Adafruit_TCS34725 tcsE = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_700MS, TCS34725_GAIN_1X); //Definição do segundo sensor (Sensor da esquerda)
+Adafruit_TCS34725 tcsE = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_600MS, TCS34725_GAIN_1X); //Definição do segundo sensor (Sensor da esquerda)
 
-Adafruit_TCS34725 tcsD = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_700MS, TCS34725_GAIN_1X); //Definição do terceiro sensor (Sensor da direita)
+Adafruit_TCS34725 tcsD = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_600MS, TCS34725_GAIN_1X); //Definição do terceiro sensor (Sensor da direita)
 
-Adafruit_TCS34725 tcsT = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_700MS, TCS34725_GAIN_1X); //Definição do quarto sensor (Sensor de trás)
+Adafruit_TCS34725 tcsT = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_600MS, TCS34725_GAIN_1X); //Definição do quarto sensor (Sensor de trás)
 
 // Definir como os motores vão andar através do resultado do sensor de cor
 
@@ -317,7 +317,7 @@ void acelerar() {
 
 void desacelerar() {
   if (vel > 0) {
-    vel -= decremento;
+    vel -= 10;
     if (vel < 0) vel = 0; // Garantir que a velocidade não seja negativa
     Serial.println("Velocidade desacelerada: " + String(vel));
   }
