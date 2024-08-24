@@ -127,16 +127,16 @@ void Frente () {
     acelerar();
 
     analogWrite(MotorBackRightA, vel); //Liga o motor com uma velocidade x, no sentido horário
-    digitalWrite(MotorBackRightB, LOW); //Desliga o sentido ant-horário do motor
+    analogWrite(MotorBackRightB, 0); //Desliga o sentido ant-horário do motor
 
     analogWrite(MotorBackLeftA, vel); //Liga o motor com uma velocidade x, no sentido horário
-    digitalWrite(MotorBackLeftB, LOW); //Desliga o sentido ant-horário do motor
+    analogWrite(MotorBackLeftB, 0); //Desliga o sentido ant-horário do motor
 
     analogWrite(MotorFrontRightA, vel); //Liga o motor com uma velocidade x, no sentido horário
-    digitalWrite(MotorFrontRightB, LOW); //Desliga o sentido ant-horário do motor
+    analogWrite(MotorFrontRightB, 0); //Desliga o sentido ant-horário do motor
 
     analogWrite(MotorFrontLeftA, vel); //Liga o motor com uma velocidade x, no sentido horário
-    digitalWrite(MotorFrontLeftB, LOW); //Desliga o sentido ant-horário do motor
+    analogWrite(MotorFrontLeftB, 0); //Desliga o sentido ant-horário do motor
 }
 
 //Função que fará o carrinho andar para Tras
@@ -144,17 +144,17 @@ void Tras () {
 
     acelerar();
     
-    analogWrite(MotorBackRightA, LOW); //Desliga o sentido horário do motor
-    digitalWrite(MotorBackRightB, vel); //Liga o motor com uma velocidade x, no sentido ant-horário
+    analogWrite(MotorBackRightA, 0); //Desliga o sentido horário do motor
+    analogWrite(MotorBackRightB, vel); //Liga o motor com uma velocidade x, no sentido ant-horário
 
-    analogWrite(MotorBackLeftA, LOW); //Desliga o sentido horário do motor
-    digitalWrite(MotorBackLeftB, vel); //Liga o motor com uma velocidade x, no sentido ant-horário
+    analogWrite(MotorBackLeftA, 0); //Desliga o sentido horário do motor
+    analogWrite(MotorBackLeftB, vel); //Liga o motor com uma velocidade x, no sentido ant-horário
 
-    analogWrite(MotorFrontRightA, LOW); //Desliga o sentido horário do motor
-    digitalWrite(MotorFrontRightB, vel); //Liga o motor com uma velocidade x, no sentido ant-horário
+    analogWrite(MotorFrontRightA, 0); //Desliga o sentido horário do motor
+    analogWrite(MotorFrontRightB, vel); //Liga o motor com uma velocidade x, no sentido ant-horário
 
-    analogWrite(MotorFrontLeftA, LOW); //Desliga o sentido horário do motor
-    digitalWrite(MotorFrontLeftB, vel); //Liga o motor com uma velocidade x, no sentido ant-horário
+    analogWrite(MotorFrontLeftA, 0); //Desliga o sentido horário do motor
+    analogWrite(MotorFrontLeftB, vel); //Liga o motor com uma velocidade x, no sentido ant-horário
 }
 
 //Função que fará o carrinho andar para Direita
@@ -166,16 +166,16 @@ void Direita () {
     acelerar(); //Chama a função para acelerar o carrinho
 
     analogWrite(MotorFrontLeftA, vel); //Liga o motor com uma velocidade x, no sentido horário
-    digitalWrite(MotorFrontLeftB, LOW); //Desliga o sentido ant-horário do motor
+    analogWrite(MotorFrontLeftB, 0); //Desliga o sentido ant-horário do motor
 
     analogWrite(MotorBackRightA, vel); //Liga o motor com uma velocidade x, no sentido horário
-    digitalWrite(MotorBackRightB, LOW); //Desliga o sentido ant-horário do motor
+    analogWrite(MotorBackRightB, 0); //Desliga o sentido ant-horário do motor
 
-    analogWrite(MotorFrontRightA, LOW); //Desliga o sentido horário do motor
-    digitalWrite(MotorFrontRightB, vel); //Liga o motor com uma velocidade x, no sentido ant-horário
+    analogWrite(MotorFrontRightA, 0); //Desliga o sentido horário do motor
+    analogWrite(MotorFrontRightB, vel); //Liga o motor com uma velocidade x, no sentido ant-horário
 
-    analogWrite(MotorBackLeftA, LOW); //Desliga o sentido horário do motor
-    digitalWrite(MotorBackLeftB, vel); //Liga o motor com uma velocidade x, no sentido ant-horário
+    analogWrite(MotorBackLeftA, 0); //Desliga o sentido horário do motor
+    analogWrite(MotorBackLeftB, vel); //Liga o motor com uma velocidade x, no sentido ant-horário
 
 }
 
@@ -187,17 +187,17 @@ void Esquerda () {
 
     acelerar(); //Chama a função para acelerar o carrinho
 
-    analogWrite(MotorFrontLeftA, LOW); //Liga o motor com uma velocidade x, no sentido horário
-    digitalWrite(MotorFrontLeftB, vel); //Desliga o sentido ant-horário do motor
+    analogWrite(MotorFrontLeftA, 0); //Liga o motor com uma velocidade x, no sentido horário
+    analogWrite(MotorFrontLeftB, vel); //Desliga o sentido ant-horário do motor
 
-    analogWrite(MotorBackRightA, LOW); //Liga o motor com uma velocidade x, no sentido horário
-    digitalWrite(MotorBackRightB, vel); //Desliga o sentido ant-horário do motor
+    analogWrite(MotorBackRightA, 0); //Liga o motor com uma velocidade x, no sentido horário
+    analogWrite(MotorBackRightB, vel); //Desliga o sentido ant-horário do motor
 
     analogWrite(MotorFrontRightA, vel); //Desliga o sentido horário do motor
-    digitalWrite(MotorFrontRightB, LOW); //Liga o motor com uma velocidade x, no sentido ant-horário
+    analogWrite(MotorFrontRightB, 0); //Liga o motor com uma velocidade x, no sentido ant-horário
 
     analogWrite(MotorBackLeftA, vel); //Desliga o sentido horário do motor
-    digitalWrite(MotorBackLeftB, LOW); //Liga o motor com uma velocidade x, no sentido ant-horário
+    analogWrite(MotorBackLeftB, 0); //Liga o motor com uma velocidade x, no sentido ant-horário
 }
 
 //Função que fará o carrinho andar para Sudoeste
@@ -208,11 +208,11 @@ void So(){
 
     acelerar(); //Chama a função que acelera o carrinho
 
-    analogWrite(MotorFrontLeftA, LOW); //Liga o motor com uma velocidade x, no sentido horário
-    digitalWrite(MotorFrontLeftB, vel); //Desliga o sentido ant-horário do motor
+    analogWrite(MotorFrontLeftA, 0); //Liga o motor com uma velocidade x, no sentido horário
+    analogWrite(MotorFrontLeftB, vel); //Desliga o sentido ant-horário do motor
 
-    analogWrite(MotorBackRightA, LOW); //Liga o motor com uma velocidade x, no sentido horário
-    digitalWrite(MotorBackRightB, vel); //Desliga o sentido ant-horário do motor
+    analogWrite(MotorBackRightA, 0); //Liga o motor com uma velocidade x, no sentido horário
+    analogWrite(MotorBackRightB, vel); //Desliga o sentido ant-horário do motor
 }
 
 //Função que fará o carrinho andar para Nordeste
@@ -225,10 +225,10 @@ void Ne(){
     acelerar(); //Chama a função que acelera o carrinho
 
     analogWrite(MotorFrontLeftA, vel); //Liga o motor com uma velocidade x, no sentido horário
-    digitalWrite(MotorFrontLeftB, LOW); //Desliga o sentido ant-horário do motor
+    analogWrite(MotorFrontLeftB, 0); //Desliga o sentido ant-horário do motor
 
     analogWrite(MotorBackRightA, vel); //Liga o motor com uma velocidade x, no sentido horário
-    digitalWrite(MotorBackRightB, LOW); //Desliga o sentido ant-horário do motor
+    analogWrite(MotorBackRightB, 0); //Desliga o sentido ant-horário do motor
 }
 
 //Função que fará o carrinho andar para Sudeste
@@ -240,11 +240,11 @@ void Se(){
 
     acelerar();
 
-    analogWrite(MotorFrontRightA, LOW); //Desliga o sentido horário do motor
-    digitalWrite(MotorFrontRightB, vel); //Liga o motor com uma velocidade x, no sentido ant-horário
+    analogWrite(MotorFrontRightA, 0); //Desliga o sentido horário do motor
+    analogWrite(MotorFrontRightB, vel); //Liga o motor com uma velocidade x, no sentido ant-horário
 
-    analogWrite(MotorBackLeftA, LOW); //Desliga o sentido horário do motor
-    digitalWrite(MotorBackLeftB, vel); //Liga o motor com uma velocidade x, no sentido ant-horário
+    analogWrite(MotorBackLeftA, 0); //Desliga o sentido horário do motor
+    analogWrite(MotorBackLeftB, vel); //Liga o motor com uma velocidade x, no sentido ant-horário
 
 }
 
@@ -254,13 +254,56 @@ void No(){
 
     // MotorFrontRight	- MotorBackLeft (Mesma direção) Horário
 
+    acelerar();
+
     analogWrite(MotorFrontRightA, vel); //Desliga o sentido horário do motor
-    digitalWrite(MotorFrontRightB, LOW); //Liga o motor com uma velocidade x, no sentido ant-horário
+    analogWrite(MotorFrontRightB, 0); //Liga o motor com uma velocidade x, no sentido ant-horário
 
     analogWrite(MotorBackLeftA, vel); //Desliga o sentido horário do motor
-    digitalWrite(MotorBackLeftB, LOW); //Liga o motor com uma velocidade x, no sentido ant-horário
+    analogWrite(MotorBackLeftB, 0); //Liga o motor com uma velocidade x, no sentido ant-horário
 }
 
+void GirarD(){
+    
+    // Volta em relação ao eixo:
+
+    // Girara as rodas da direita na direção x e girara as rodas da esquerda na direção contrária
+
+    acelerar();
+
+    analogWrite(MotorBackRightA, 0); //Desliga o sentido horário do motor
+    analogWrite(MotorBackRightB, vel); //Liga o motor com uma velocidade x, no sentido ant-horário
+
+    analogWrite(MotorFrontRightA, 0); //Desliga o sentido horário do motor
+    analogWrite(MotorFrontRightB, vel); //Liga o motor com uma velocidade x, no sentido ant-horário
+
+    analogWrite(MotorBackLeftA, vel); //Desliga o sentido horário do motor
+    analogWrite(MotorBackLeftB, 0); //Liga o motor com uma velocidade x, no sentido ant-horário
+
+    analogWrite(MotorFrontLeftA, vel); //Desliga o sentido horário do motor
+    analogWrite(MotorFrontLeftB, 0); //Liga o motor com uma velocidade x, no sentido ant-horário
+}
+
+void GirarE(){
+    
+    // Volta em relação ao eixo:
+
+    // Girara as rodas da direita na direção x e girara as rodas da esquerda na direção contrária
+
+    acelerar();
+
+    analogWrite(MotorBackRightA, vel); //Desliga o sentido horário do motor
+    analogWrite(MotorBackRightB, 0); //Liga o motor com uma velocidade x, no sentido ant-horário
+
+    analogWrite(MotorFrontRightA, vel); //Desliga o sentido horário do motor
+    analogWrite(MotorFrontRightB, 0); //Liga o motor com uma velocidade x, no sentido ant-horário
+
+    analogWrite(MotorBackLeftA, vel); //Desliga o sentido horário do motor
+    analogWrite(MotorBackLeftB, 0); //Liga o motor com uma velocidade x, no sentido ant-horário
+
+    analogWrite(MotorFrontLeftA, vel); //Desliga o sentido horário do motor
+    analogWrite(MotorFrontLeftB, 0); //Liga o motor com uma velocidade x, no sentido ant-horário
+}
 
 // Função para acelerar a velocidade
 void acelerar() {
@@ -280,4 +323,4 @@ void desacelerar() {
   }
 }
 
-a
+digitalWrite
