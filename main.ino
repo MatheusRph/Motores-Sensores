@@ -322,5 +322,3 @@ void desacelerar() {
     Serial.println("Velocidade desacelerada: " + String(vel));
   }
 }
-
-digitalWrite
