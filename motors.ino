@@ -39,8 +39,6 @@ bool isBlack(uint16_t r, uint16_t g, uint16_t b, uint16_t threshold = 30) {
   return (r < threshold && g < threshold && b < threshold);
 }
 
-const preto = 0;
-
 //#define modulo_Servo_Pino_D 33
 //#define modulo_Servo_Pino_E 25
 //#define modulo_Servo_Pino_F 26
