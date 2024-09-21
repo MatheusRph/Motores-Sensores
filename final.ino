@@ -1,9 +1,3 @@
-// Servo Sweep example for the ESP32
-// https://wokwi.com/arduino/projects/323706614646309460
-// Criado por PionersTech
-// Professor Thales Augusto Cargdoso dos Santos
-// Controle para motores, Servos e RGB Endereçável de um Robô
-
 // ===================================
 //            Bibliotecas
 // ===================================
