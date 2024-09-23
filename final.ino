@@ -50,6 +50,9 @@ const byte motor_A_IP = 13; //Motor A; // Pino de entrada positiva do Motor A (F
 const byte motor_B_IN = 4;  // Pino de entrada negativa do Motor B (Faz a roda girar no sentido anti-horário)
 const byte motor_B_IP = 2;  //Pino de entrada positiva do Motor B (Faz a roda girar no sentido horário)
 
+/*Constantes de definição para os pinos do ultrassônico*/
+//Infravermelho A
+const byte IR_A_PIN = 15;// Pino do sensor Infravermlho
 // ===================================
 //            Variáveis
 // ===================================
@@ -80,6 +83,24 @@ uint8_t R = 255, G = 255, B = 255;
 // ===================================
 //            Funções
 // ===================================
+
+/*
+    Função: setInfra
+    Descrição: Configura os sensores Infra, definindo pinos
+*/
+void setInfra(){
+  pinMode(IR_PIN, INPUT);//Configura como pino de entrada
+}
+
+/*
+    Função: readInfra
+    Descrição: Le o sensor Infravermelho e retorna o valor lido
+*/
+float readInfra() {
+  float voltage = analogRead(IR_PIN) * (3.3 / 4095.0);  // Converte ADC em tensão
+  float distance = 27.61 / (voltage - 0.1696);   // Fórmula do Sharp GP2Y0A21
+  return distance;  // Retorna a distância calculada
+}
 
 /*
     Função: setServos
@@ -151,6 +172,21 @@ void servoDireita(int numeroServo) {
     }
   } else { // Caso o número do servo não seja válido
     Serial.println("Número de servo inválido!"); // Imprime mensagem de erro no console
+  }
+}
+
+/*
+      Função: arvoresServo
+      Descrição: Esta função aciona o servo e continua a executar ele até ele ser ativado.
+*/
+void arvoresServo(int numeroServo){
+  int graus = 0;
+  //Chamar a leitura do infra vermelho:
+  //Enquanto o valor do infravermelho for maior que 2mm o servo continuará a fechar
+  while (/*Valor infra*/ > 2){
+    //Chama a leitura do infravermelho
+    servos[numeroServo].write(graus); // Move o servo para o ângulo especificado
+    graus += 5;
   }
 }
 
