@@ -43,12 +43,12 @@ unsigned int timeMotor = 1000;  //Tempo de ligar o Motor
 //M2 4 2
 //M3 17 12
 //M4 15 14
-const byte motor_A_IN = 27; //Motor A; // Pino de entrada negativo do Motor A (Faz a roda girar no sentido anti-horário)
-const byte motor_A_IP = 13; //Motor A; // Pino de entrada positiva do Motor A (Faz a roda girar no sentido horário)
+const byte motor_A_IN = 4; //Motor A; // Pino de entrada negativo do Motor A (Faz a roda girar no sentido anti-horário)
+const byte motor_A_IP = 2; //Motor A; // Pino de entrada positiva do Motor A (Faz a roda girar no sentido horário)
 
 //Motor B;
-const byte motor_B_IN = 4;  // Pino de entrada negativa do Motor B (Faz a roda girar no sentido anti-horário)
-const byte motor_B_IP = 2;  //Pino de entrada positiva do Motor B (Faz a roda girar no sentido horário)
+const byte motor_B_IN = 13;  // Pino de entrada negativa do Motor B (Faz a roda girar no sentido anti-horário)
+const byte motor_B_IP = 27;  //Pino de entrada positiva do Motor B (Faz a roda girar no sentido horário)
 
 /*Constantes de definição para os pinos do ultrassônico*/
 //Infravermelho A
