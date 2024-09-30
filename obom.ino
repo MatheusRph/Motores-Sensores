@@ -22,7 +22,7 @@ void luz() {
   tcsF.getRawData(&r, &g, &b, &c);
   
   calibW = ((float)c / 1000) - 0.153;
-  calibBL = (sqrt((float)c / 1000) - 0.408) / 2; // Cálculo direto em calibBL
+  calibBL = (sqrt((float)c / 1000) - 0.4) / 2; // Cálculo direto em calibBL
 }
 
 void setup(){
@@ -67,11 +67,11 @@ void loop(){
     Serial.print("Blue: ");
     Serial.println(bp); // Mostrando o valor de azul
 
-    if (cp < (calibBL + margem) && bp <= (calibB + margem) && gp <= (calibG + margem) && abs(r - g) > 23) {
+    if (cp < (calibBL + margem) && bp <= (calibB + margem) && gp <= (calibG + margem) && abs(r - g) < 21) {
         cor = "PRETO"; // Cor detectada: Preto
     } else if (cp > (calibW + margem) && gp >= (calibG + margem) && rp >= (calibR + margem)) {
         cor = "BRANCO"; // Cor detectada: Branco
-    } else if (rp > (calibR + margem) && gp <= (calibG + margem) && abs(r - g) <= 13) {
+    } else if (rp > (calibR + margem) && gp <= (calibG + margem) && abs(r - g) >= 25) {
         cor = "VERMELHO"; // Cor detectada: Vermelho
     } else if (gp > (calibG + margem) && bp <= (calibB + margem)) {
         cor = "VERDE"; // Cor detectada: Verde
