@@ -23,7 +23,7 @@
 #define qtdServos 4 //Informa a quantidade de Servos que serão ligados em cascata
 
 /*Definição do arduino em geral*/
-#define D_in 16 //Nomeia o pino 6 do Arduino
+#define D_in 16 //Nomeia o pino 16 do Arduino
 
 // ===================================
 //            Constantes
