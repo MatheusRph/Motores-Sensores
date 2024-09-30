@@ -21,8 +21,8 @@ void luz() {
   delay(5000);
   tcsF.getRawData(&r, &g, &b, &c);
   
-  calibW = ((float)c / 1000) - 0.153;
-  calibBL = (sqrt((float)c / 1000) - 0.4) / 2; // Cálculo direto em calibBL
+  calibW = ((float)c / 1000) - 0.152;
+  calibBL = (sqrt((float)c / 1000) - 0.401) / 2; // Cálculo direto em calibBL
 }
 
 void setup(){
@@ -62,7 +62,10 @@ void loop(){
     Serial.println(cp); // Mostrando o valor de clear
     Serial.print("Red: ");
     Serial.println(rp); // Mostrando o valor de vermelho
-    Serial.print(    Serial.println(bp); // Mostrando o valor de azul
+    Serial.print("Blue: ");
+    Serial.println(bp); // Mostrando o valor de azul
+    Serial.print("Green: ");
+    Serial.println(gp); // Mostrando o valor de verde
 
     if (cp < (calibBL + margem) && bp <= (calibB + margem) && gp <= (calibG + margem) && abs(r - g) < 35) {
         cor = "PRETO"; // Cor detectada: Preto
@@ -76,11 +79,7 @@ void loop(){
         cor = "AZUL"; // Cor detectada: Azul
     } else {
         cor = "Desconhecida"; // Cor des"Green: ");
-    Serial.println(gp); // Mostrando o valor de verde
-    Serial.print("Blue: ");
-conhecida
     }
-
 
     Serial.print("Cor detectada: ");
     Serial.println(cor); // Adicionado para mostrar a cor detectada
