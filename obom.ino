@@ -21,13 +21,13 @@ void luz() {
   delay(5000);
   tcsF.getRawData(&r, &g, &b, &c);
   
-  calibW = ((float)c / 1000) - 0.15;
-  calibBL = (sqrt((float)c / 1000) - 0.401) / 2; // Cálculo direto em calibBL
+  calibW = ((float)c / 1000) - 0.153;
+  calibBL = (sqrt((float)c / 1000) - 0.408) / 2; // Cálculo direto em calibBL
 }
 
 void setup(){
     pinMode(D_in, OUTPUT); //Configura o pino 16 como saída
-    digitalWrite(16, LOW); // Desliga o LED RGB
+    digitalWrite(16, HIGH); // Desliga o LED RGB
     Serial.begin(115200);
     if (!tcsF.begin()) {
         Serial.println("Não foi possível encontrar o sensor ColorFrente.");
@@ -67,11 +67,11 @@ void loop(){
     Serial.print("Blue: ");
     Serial.println(bp); // Mostrando o valor de azul
 
-    if (cp < (calibBL + margem) && bp <= (calibB + margem) && gp <= (calibG + margem)) {
+    if (cp < (calibBL + margem) && bp <= (calibB + margem) && gp <= (calibG + margem) && abs(r - g) > 23) {
         cor = "PRETO"; // Cor detectada: Preto
     } else if (cp > (calibW + margem) && gp >= (calibG + margem) && rp >= (calibR + margem)) {
         cor = "BRANCO"; // Cor detectada: Branco
-    } else if (rp > (calibR + margem) && gp <= (calibG + margem)) {
+    } else if (rp > (calibR + margem) && gp <= (calibG + margem) && abs(r - g) <= 13) {
         cor = "VERMELHO"; // Cor detectada: Vermelho
     } else if (gp > (calibG + margem) && bp <= (calibB + margem)) {
         cor = "VERDE"; // Cor detectada: Verde
