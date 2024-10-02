@@ -2,7 +2,7 @@
 #include <Adafruit_TCS34725.h>
 #include <cmath> // Adicione esta linha para usar sqrt
 
-Adafruit_TCS34725 colorSensor = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_600MS, TCS34725_GAIN_1X); // Sensor na esquerda
+Adafruit_TCS34725 colorSensor = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X); //240 1x
 
 int calibR = 0;
 int calibG = 0;
@@ -16,7 +16,7 @@ int calibWB = 0;
 int calibW = 0;
 int calibBL = 0;
 
-int margem = 25;
+int margem = 50;
 
 String ColorTcs;
 
@@ -41,17 +41,17 @@ void calibratorColors() {
     Serial.print(c);
   
     delay(3000);
-    calibR = r / 2;
-    calibG = g / 2;
-    calibB = b / 2;
-    calibBR = std::sqrt(r) * 4.6;
-    calibBG = std::sqrt(g) * 4.6;
-    calibBB = std::sqrt(b) * 4.6;
-    calibBB = std::sqrt(c) * 4.6;
-    calibWR = r / 1.178;
-    calibWG = g / 1.178;
-    calibWB = b / 1.178;
-    calibW = (r + b + g) / 1.178;
+    calibR = r / 2.26;
+    calibG = g / 2.4;
+    calibB = b / 2.4;
+    calibBR = std::sqrt(r) * 4.3;
+    calibBG = std::sqrt(g) * 4.3;
+    calibBB = std::sqrt(b) * 4.3;
+    calibBB = std::sqrt(c) * 4.3;
+    calibWR = r / 1.155; //1.178 //1.152 //1.141
+    calibWG = g / 1.155; //1.178
+    calibWB = b / 1.155; //1.178
+    calibW = (r + b + g) / 1.158;
 
     Serial.println("Cores calibradas.");
     Serial.print("Calibrações: R=");
@@ -98,11 +98,11 @@ void identifyColor(uint16_t rp, uint16_t gp, uint16_t bp, uint16_t cp, String &c
         cor = "Preto"; // Cor detectada: Preto
     } else if (rp >= calibR && gp <= (calibG + margem) && bp <= (calibB + margem)) {
         cor = "Vermelho"; // Cor detectada: Vermelho
-    } else if (gp >= calibG && rp <= (calibR + margem) && bp <= (calibB + margem)) {
+    } else if (gp >= calibG && rp <= (calibR + margem) && bp <= (calibB + margem) && gp > bp) {
         cor = "Verde"; // Cor detectada: Verde
-    } else if (bp >= calibB && rp <= (calibR + margem) && gp <= (calibG + margem)) {
+    } else if (bp >= calibB && rp <= (calibR + margem) && gp <= (calibG + margem) && bp > gp) {
         cor = "Azul"; // Cor detectada: Azul
-    } else if (rp >= calibWR && gp >= calibWG && bp >= calibWB && cp >= calibW) {
+    } else if (rp >= calibWR && gp >= calibWG && bp >= calibWB && cp >= calibW) {                                                       
         cor = "Branco"; // Cor detectada: Branco
     } else {
         cor = "Desconhecida"; // Cor desconhecida
