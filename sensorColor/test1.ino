@@ -44,10 +44,10 @@ void calibratorColors() {
     calibR = r / 2;
     calibG = g / 2;
     calibB = b / 2;
-    calibBR = std::sqrt(r) * 4.03;
-    calibBG = std::sqrt(g) * 4.03;
-    calibBB = std::sqrt(b) * 4.03;
-    calibBB = std::sqrt(c) * 4.03;
+    calibBR = std::sqrt(r) * 4.6;
+    calibBG = std::sqrt(g) * 4.6;
+    calibBB = std::sqrt(b) * 4.6;
+    calibBB = std::sqrt(c) * 4.6;
     calibWR = r / 1.178;
     calibWG = g / 1.178;
     calibWB = b / 1.178;
