@@ -8,6 +8,7 @@
 #include <Adafruit_NeoPixel.h> // Adiciona a biblioteca para controle de LEDs endereçáveis da Adafruit
 #include <Adafruit_TCS34725.h> // Biblioteca dos Sensores de Cor
 #include <Wire.h>
+#include <cmath> // Adicione esta linha para usar sqrt
 
 
 // ===================================
@@ -60,6 +61,7 @@ const byte motor_B_IP = 27;  //Pino de entrada positiva do Motor B (Faz a roda g
 //            Variáveis
 // ===================================
 
+
 // Variáveis para definição da velocidade dos motores
 byte velocityMotorA = 127; // Velocidade do Motor A
 byte velocityMotorB = 127; // Velocidade do Motor B
@@ -68,6 +70,19 @@ byte velocityMotorB = 127; // Velocidade do Motor B
 Adafruit_TCS34725 tcsF = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_600MS, TCS34725_GAIN_1X); // Sensor na frente
 Adafruit_TCS34725 tcsR = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_600MS, TCS34725_GAIN_1X); // Sensor na direita
 Adafruit_TCS34725 tcsL = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_600MS, TCS34725_GAIN_1X); // Sensor na esquerda
+
+int calibR = 0;
+int calibG = 0;
+int calibB = 0;
+int calibBR = 0;
+int calibBG = 0;
+int calibBB = 0;
+int calibWR = 0;
+int calibWG = 0;
+int calibWB = 0;
+int calibW = 0;
+int calibBL = 0;
+int margem = 50;
 
 String colorF; // Variável para armazenar a cor lida pelo sensor da frente
 String colorL; // Variável para armazenar a cor lida pelo sensor esquerdo
@@ -197,46 +212,84 @@ void checkSensorColor() {
 }
 
 /*
+    Função: calibratorColors
+    Descrição: Calibra as cores a partir de somente um sensor!
+*/
+void calibratorColors() {
+    delay(3000);
+    uint16_t r, g, b, c;
+    colorSensor.getRawData(&r, &g, &b, &c);
+       
+    Serial.print("Não Calibradas: R=");
+    Serial.print(r);
+    Serial.print(", G=");
+    Serial.print(g);
+    Serial.print(", B=");
+    Serial.print(b);
+    Serial.print(", C=");
+    Serial.print(c);
+  
+    delay(3000);
+    calibR = r / 2.26;
+    calibG = g / 2.4;
+    calibB = b / 2.4;
+    calibBR = std::sqrt(r) * 4.3;
+    calibBG = std::sqrt(g) * 4.3;
+    calibBB = std::sqrt(b) * 4.3;
+    calibBB = std::sqrt(c) * 4.3;
+    calibWR = r / 1.155; //1.178 //1.152 //1.141
+    calibWG = g / 1.155; //1.178
+    calibWB = b / 1.155; //1.178
+    calibW = (r + b + g) / 1.158;
+
+    Serial.println("Cores calibradas.");
+    Serial.print("Calibrações: R=");
+    Serial.print(calibR);
+    Serial.print(", G=");
+    Serial.print(calibG);
+    Serial.print(", B=");
+    Serial.print(calibB);
+    Serial.print(", BR=");
+    Serial.print(calibBR);
+    Serial.print(", BG=");
+    Serial.print(calibBG);
+    Serial.print(", BB=");
+    Serial.print(calibBB);
+    Serial.print(", WR=");
+    Serial.print(calibWR);
+    Serial.print(", WG=");
+    Serial.print(calibWG);
+    Serial.print(", WB=");
+    Serial.println(calibWB);
+    Serial.print(", W=");
+    Serial.println(calibW);
+}
+
+
+/*
     Função: identifyColor
     Descrição: Identifica as cores com base nos valores RGB.
 */
-String identifyColor(uint16_t red, uint16_t green, uint16_t blue) {
-  // Limiares para identificação das cores
-    const uint16_t blackThreshold = 50;    // Limite para considerar a cor como preto
-    const uint16_t whiteThreshold = 200;   // Limite para considerar a cor como branco
-    const uint16_t redThreshold = 200;     // Limite para considerar a cor como vermelha
-    const uint16_t greenThreshold = 200;   // Limite para considerar a cor como verde
-    const uint16_t blueThreshold = 200;    // Limite para considerar a cor como azul
+String identifyColor(uint16_t rp, uint16_t gp, uint16_t bp, uint16_t cp, String &cor) {
+    delay(1);
 
-
-  // Verifica se a cor detectada é preta
-  if (red < blackThreshold && green < blackThreshold && blue < blackThreshold) {
-    return "Preto";
-  }
-
-  // Verifica se a cor detectada é branca
-  if (red > whiteThreshold && green > whiteThreshold && blue > whiteThreshold) {
-    return "Branco";
-  }
-
-  // Verifica se a cor detectada é vermelha
-  if (red > redThreshold && green < greenThreshold && blue < blueThreshold) {
-    return "Vermelho";
-  }
-
-  // Verifica se a cor detectada é verde
-  if (red < redThreshold && green > greenThreshold && blue < blueThreshold) {
-    return "Verde";
-  }
-
-  // Verifica se a cor detectada é azul
-  if (red < redThreshold && green < greenThreshold && blue > blueThreshold) {
-    return "Azul";
-  }
-
-  // Se nenhuma das condições acima for satisfeita, retorna "Desconhecida"
-  return "Desconhecida";
+    if (bp <= (calibBB) &&
+        gp <= (calibBG) &&
+        rp <= (calibBR)) {
+        cor = "Preto"; // Cor detectada: Preto
+    } else if (rp >= calibR && gp <= (calibG + margem) && bp <= (calibB + margem)) {
+        cor = "Vermelho"; // Cor detectada: Vermelho
+    } else if (gp >= calibG && rp <= (calibR + margem) && bp <= (calibB + margem) && gp > bp) {
+        cor = "Verde"; // Cor detectada: Verde
+    } else if (bp >= calibB && rp <= (calibR + margem) && gp <= (calibG + margem) && bp > gp) {
+        cor = "Azul"; // Cor detectada: Azul
+    } else if (rp >= calibWR && gp >= calibWG && bp >= calibWB && cp >= calibW) {                                                       
+        cor = "Branco"; // Cor detectada: Branco
+    } else {
+        cor = "Desconhecida"; // Cor desconhecida
+    }
 }
+
 
 
 
@@ -271,8 +324,8 @@ void readTcsL() {
     uint16_t redL, greenL, blueL, clearL; // Declara variáveis para armazenar os valores de cor e intensidade
     tcsL.getRawData(&redL, &greenL, &blueL, &clearL); // Lê os dados brutos de cor do sensor na esquerda
     colorL = identifyColor(redL, greenL, blueL); // Identifica a cor com base nos valores lidos
-    // Serial.print("Cor na esquerda: "); // (Opcional) Imprime a mensagem para indicar que a cor está sendo mostrada
-    // Serial.println(colorL); // (Opcional) Exibe a cor identificada no console
+    Serial.print("Cor na esquerda: "); // (Opcional) Imprime a mensagem para indicar que a cor está sendo mostrada
+    Serial.println(colorL); // (Opcional) Exibe a cor identificada no console
 }
 
 
@@ -284,8 +337,8 @@ void readTcsR() {
     uint16_t redR, greenR, blueR, clearR; // Declara variáveis para armazenar os valores de cor e intensidade
     tcsR.getRawData(&redR, &greenR, &blueR, &clearR); // Lê os dados brutos de cor do sensor à direita
     colorR = identifyColor(redR, greenR, blueR); // Identifica a cor com base nos valores lidos e armazena na variável global colorR
-    // Serial.print("Cor na direita: "); // (Opcional) Imprime a mensagem para indicar que a cor está sendo mostrada
-    // Serial.println(colorR); // (Opcional) Exibe a cor identificada no console
+    Serial.print("Cor na direita: "); // (Opcional) Imprime a mensagem para indicar que a cor está sendo mostrada
+    Serial.println(colorR); // (Opcional) Exibe a cor identificada no console
 }
 
 
@@ -406,7 +459,6 @@ void setup() {
   //pixels.clear(); //desliga todos os LEDs
   //setMotors(); //configura os motores
   //setServos(); //configura os servos
-  Wire.begin(SDA_PIN, SCL_PIN);
   delay(1000);
   checkSensorColor(); //Inicializa e verifica se os sensores de cor estão corretos
   //stopCar(1000); //para o robo por 1 segundo
