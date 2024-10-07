@@ -49,14 +49,14 @@ void calibratorColors() {
     uint16_t r, g, b, c;
     colorSensor.getRawData(&r, &g, &b, &c);
        
-    // Serial.print("Não Calibradas: R=");
-    // Serial.print(r);
-    // Serial.print(", G=");
-    // Serial.print(g);
-    // Serial.print(", B=");
-    // Serial.print(b);
-    // Serial.print(", C=");
-    // Serial.print(c);
+    Serial.print("Não Calibradas: R=");
+    Serial.print(r);
+    Serial.print(", G=");
+    Serial.print(g);
+    Serial.print(", B=");
+    Serial.print(b);
+    Serial.print(", C=");
+    Serial.print(c);
   
     delay(3000);
     calibR = r / 2.26;
@@ -71,27 +71,27 @@ void calibratorColors() {
     calibWB = b / 1.155; //1.178
     calibW = (r + b + g) / 1.158;
 
-    // Serial.println("Cores calibradas.");
-    // Serial.print("Calibrações: R=");
-    // Serial.print(calibR);
-    // Serial.print(", G=");
-    // Serial.print(calibG);
-    // Serial.print(", B=");
-    // Serial.print(calibB);
-    // Serial.print(", BR=");
-    // Serial.print(calibBR);
-    // Serial.print(", BG=");
-    // Serial.print(calibBG);
-    // Serial.print(", BB=");
-    // Serial.print(calibBB);
-    // Serial.print(", WR=");
-    // Serial.print(calibWR);
-    // Serial.print(", WG=");
-    // Serial.print(calibWG);
-    // Serial.print(", WB=");
-    // Serial.println(calibWB);
-    // Serial.print(", W=");
-    // Serial.println(calibW);
+    Serial.println("Cores calibradas.");
+    Serial.print("Calibrações: R=");
+    Serial.print(calibR);
+    Serial.print(", G=");
+    Serial.print(calibG);
+    Serial.print(", B=");
+    Serial.print(calibB);
+    Serial.print(", BR=");
+    Serial.print(calibBR);
+    Serial.print(", BG=");
+    Serial.print(calibBG);
+    Serial.print(", BB=");
+    Serial.print(calibBB);
+    Serial.print(", WR=");
+    Serial.print(calibWR);
+    Serial.print(", WG=");
+    Serial.print(calibWG);
+    Serial.print(", WB=");
+    Serial.println(calibWB);
+    Serial.print(", W=");
+    Serial.println(calibW);
 }
 
 void identifyColor(uint16_t rp, uint16_t gp, uint16_t bp, uint16_t cp, String &cor) {
@@ -119,14 +119,14 @@ void readTcs() {
     colorSensor.getRawData(&r, &g, &b, &c);
     identifyColor(r, g, b, c, ColorTcs);
 
-    Serial.print("Cores de leitura R=");
-    Serial.print(r);
-    Serial.print(", G=");
-    Serial.print(g);
-    Serial.print(", B=");
-    Serial.print(b);
-    Serial.print(", C=");
-    Serial.print(c);
+    // Serial.print("Cores de leitura R=");
+    // Serial.print(r);
+    // Serial.print(", G=");
+    // Serial.print(g);
+    // Serial.print(", B=");
+    // Serial.print(b);
+    // Serial.print(", C=");
+    // Serial.print(c);
 
     Serial.println("Cor detectada: " + ColorTcs);
 }

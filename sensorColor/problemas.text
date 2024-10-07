@@ -1,2 +1,12 @@
 Se o sensor tiver o mesmo I2C, teremos de modificar como o sensor é viabilizado.
 
+Preciso testar os 2 sensores de cor
+Preciso calibrar os sensores de cor (Melhorar a calibração)
+Preciso testar os motores para verificar a direção
+Preciso retomar a programação de acordo com as direções cardeais 
+
+
+Quando finalizar tudo 
+Iniciar a programação do robô na mesa
+
+
