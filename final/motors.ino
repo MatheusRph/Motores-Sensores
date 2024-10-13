@@ -50,8 +50,8 @@ const byte motor_LB_IP = 12;  //Pino de entrada positiva do Motor B (Faz a roda 
 //            Variáveis
 // ===================================
 int rampTime = 1000;
-int minSpeed = 120;
-int maxSpeed = 250;
+int minSpeed = 80;
+int maxSpeed = 117;
 
 // Variáveis para definição da velocidade dos motores
 byte velocityMotorR = 200; // Velocidade dos motores do lado Direito
@@ -134,16 +134,10 @@ void moveBackward(unsigned int timeMotor) {
   // Mover carro para trás
     for (int speed = minSpeed; speed <= maxSpeed; speed++) {
         analogWrite(motor_RA_IN, velocityMotorR); // Ativa o motor A no sentido ant-horário com a velocidade definida
-        analogWrite(motor_RA_IP, 0); // Desativa o motor A no sentido horário
-
         analogWrite(motor_RB_IN, speed); // Ativa o motor B no sentido ant-horário com a velocidade definida
-        analogWrite(motor_RB_IP, 0); // Desativa o motor B no sentido horário
-
         analogWrite(motor_LA_IN, speed); // Ativa o motor A no sentido ant-horário com a velocidade definida
-        analogWrite(motor_LA_IP, 0); // Desativa o motor A no sentido horário
-
         analogWrite(motor_LB_IN, speed); // Ativa o motor B no sentido ant-horário com a velocidade definida
-        analogWrite(motor_LB_IP, 0); // Desativa o motor B no sentido horário
+        delay(rampTime / maxSpeed);
 
     }
 
@@ -151,16 +145,10 @@ void moveBackward(unsigned int timeMotor) {
 
     for (int speed = maxSpeed; speed >= minSpeed; speed--) {
         analogWrite(motor_RA_IN, speed); // Ativa o motor A no sentido ant-horário com a velocidade definida
-        analogWrite(motor_RA_IP, 0); // Desativa o motor A no sentido horário
-
         analogWrite(motor_RB_IN, speed); // Ativa o motor B no sentido ant-horário com a velocidade definida
-        analogWrite(motor_RB_IP, 0); // Desativa o motor B no sentido horário
-
         analogWrite(motor_LA_IN, speed); // Ativa o motor A no sentido ant-horário com a velocidade definida
-        analogWrite(motor_LA_IP, 0); // Desativa o motor A no sentido horário
-
         analogWrite(motor_LB_IN, speed); // Ativa o motor B no sentido ant-horário com a velocidade definida
-        analogWrite(motor_LB_IP, 0); // Desativa o motor B no sentido horário
+        delay(rampTime / maxSpeed);
     }
 }
 
@@ -173,33 +161,21 @@ void moveForward(unsigned int timeMotor) {
     stopMotors();
     // Mover carro para frente
     for (int speed = minSpeed; speed <= maxSpeed; speed++) {
-        analogWrite(motor_RA_IN, 0); // Desativa o motor A no sentido anti-horário
         analogWrite(motor_RA_IP, speed); // Ativa o motor A no sentido horário com a velocidade definida
-
-        analogWrite(motor_RB_IN, 0); // Desativa o motor B no sentido anti-horário
         analogWrite(motor_RB_IP, speed); // Ativa o motor B no sentido horário com a velocidade definida
-
-        analogWrite(motor_LA_IN, 0); // Ativa o motor A no sentido ant-horário com a velocidade definida
         analogWrite(motor_LA_IP, speed); // Desativa o motor A no sentido horário
-
-        analogWrite(motor_LB_IN, 0); // Ativa o motor B no sentido ant-horário com a velocidade definida
         analogWrite(motor_LB_IP, speed); // Desativa o motor B no sentido horário
+        delay(rampTime / maxSpeed);
     }
 
     delay(timeMotor); // Aguarda pelo tempo especificado (timeMotor) antes de continuar
 
     for (int speed = maxSpeed; speed >= minSpeed; speed--) {
-        analogWrite(motor_RA_IN, 0); // Desativa o motor A no sentido anti-horário
         analogWrite(motor_RA_IP, speed); // Ativa o motor A no sentido horário com a velocidade definida
-
-        analogWrite(motor_RB_IN, 0); // Desativa o motor B no sentido anti-horário
         analogWrite(motor_RB_IP, speed); // Ativa o motor B no sentido horário com a velocidade definida
-
-        analogWrite(motor_LA_IN, 0); // Ativa o motor A no sentido ant-horário com a velocidade definida
         analogWrite(motor_LA_IP, speed); // Desativa o motor A no sentido horário
-
-        analogWrite(motor_LB_IN, 0); // Ativa o motor B no sentido ant-horário com a velocidade definida
         analogWrite(motor_LB_IP, speed); // Desativa o motor B no sentido horário
+        delay(rampTime / maxSpeed);
     }
 }
 
@@ -283,18 +259,16 @@ void turnRight(unsigned int timeMotor) {
 
     for (int speed = minSpeed; speed <= maxSpeed; speed++) {
         analogWrite(motor_RA_IN, speed); // Ativa o motor do lado direito no sentido anti-horário
-        analogWrite(motor_RA_IP, 0);       // Desativa o motor do lado direito no sentido horário
         analogWrite(motor_RB_IN, speed); // Ativa o motor do lado direito no sentido anti-horário
-        analogWrite(motor_RB_IP, 0);       // Desativa o motor do lado direito no sentido horário
+        delay(rampTime / maxSpeed);
     }
 
     delay(timeMotor); // Aguarda pelo tempo especificado antes de continuar
 
     for (int speed = maxSpeed; speed >= minSpeed; speed--) {
         analogWrite(motor_RA_IN, speed); // Ativa o motor do lado direito no sentido anti-horário
-        analogWrite(motor_RA_IP, 0);       // Desativa o motor do lado direito no sentido horário
         analogWrite(motor_RB_IN, speed); // Ativa o motor do lado direito no sentido anti-horário
-        analogWrite(motor_RB_IP, 0);       // Desativa o motor do lado direito no sentido horário
+        delay(rampTime / maxSpeed);
     }
 }
 
@@ -309,72 +283,59 @@ void turnLeft(unsigned int timeMotor) {
 
     for (int speed = minSpeed; speed <= maxSpeed; speed++) {
         analogWrite(motor_LA_IN, speed); // Ativa o motor do lado esquerdo no sentido anti-horário
-        analogWrite(motor_LA_IP, 0);        // Desativa o motor do lado esquerdo no sentido horário
         analogWrite(motor_LB_IN, speed); // Ativa o motor do lado esquerdo no sentido anti-horário
-        analogWrite(motor_LB_IP, 0);        // Desativa o motor do lado esquerdo no sentido horário   
+        delay(rampTime / maxSpeed);  
     }
 
     delay(timeMotor); // Aguarda pelo tempo especificado antes de continuar
 
     for (int speed = maxSpeed; speed >= minSpeed; speed--) {
         analogWrite(motor_LA_IN, speed); // Ativa o motor do lado esquerdo no sentido anti-horário
-        analogWrite(motor_LA_IP, 0);        // Desativa o motor do lado esquerdo no sentido horário
         analogWrite(motor_LB_IN, speed); // Ativa o motor do lado esquerdo no sentido anti-horário
-        analogWrite(motor_LB_IP, 0);        // Desativa o motor do lado esquerdo no sentido horário    
+        delay(rampTime / maxSpeed); 
     }
 }
 
 
 //Função que fará o carrinho andar para Sudoeste
-void So() {
+void So(unsigned int timeMotor) {
   stopMotors();
     // Liga os motores adequadamente para mover para sudoeste
     for (int speed = minSpeed; speed <= maxSpeed; speed++) {
-        analogWrite(motor_LA_IP, 0); // Desativa a direção horário
-        analogWrite(motor_LA_IN, velocityMotorL); // Ativa no sentido anti-horário
-
-        analogWrite(motor_RB_IP, 0); // Desativa a direção horário
-        analogWrite(motor_RB_IN, velocityMotorR); // Ativa no sentido anti-horário
+        analogWrite(motor_LA_IN, speed); // Ativa no sentido anti-horário
+        analogWrite(motor_RB_IN, speed); // Ativa no sentido anti-horário
+        delay(rampTime / maxSpeed);
     }
 
     delay(timeMotor); // Aguarda pelo tempo especificado antes de continuar
 
     for (int speed = maxSpeed; speed >= minSpeed; speed--) {
-        analogWrite(motor_LA_IP, 0); // Desativa a direção horário
-        analogWrite(motor_LA_IN, velocityMotorL); // Ativa no sentido anti-horário
-
-        analogWrite(motor_RB_IP, 0); // Desativa a direção horário
-        analogWrite(motor_RB_IN, velocityMotorR); // Ativa no sentido anti-horário
+        analogWrite(motor_LA_IN, speed); // Ativa no sentido anti-horário
+        analogWrite(motor_RB_IN, speed); // Ativa no sentido anti-horário
+        delay(rampTime / maxSpeed);
     }
+    delay(10);
 }
 
 
 //Função que fará o carrinho andar para Nordeste
-void Ne(){
-
-    // Diagonal NE:
-
-    // MotorFrontLeft - MotorBackRight (Mesma direção) Horário
-
-    stopMotors();
-
+void Ne(unsigned int timeMotor){
+  stopMotors();
+    // Liga os motores adequadamente para mover para sudoeste
     for (int speed = minSpeed; speed <= maxSpeed; speed++) {
-        analogWrite(motor_LA_IP, 0); // Desativa a direção horário
-        analogWrite(motor_LA_IN, velocityMotorL); // Ativa no sentido anti-horário
-
-        analogWrite(motor_RB_IP, 0); // Desativa a direção horário
-        analogWrite(motor_RB_IN, velocityMotorR); // Ativa no sentido anti-horário
+        analogWrite(motor_LA_IP, speed); // Ativa no sentido anti-horário
+        analogWrite(motor_RB_IP, speed); // Ativa no sentido anti-horário
+        delay(rampTime / maxSpeed);
     }
 
     delay(timeMotor); // Aguarda pelo tempo especificado antes de continuar
 
     for (int speed = maxSpeed; speed >= minSpeed; speed--) {
-        analogWrite(motor_LA_IP, velocityMotorL); //Liga o motor com uma velocidade x, no sentido horário
-        analogWrite(motor_LA_IN, 0); //Desliga o sentido ant-horário do motor
-
-        analogWrite(motor_RB_IP, velocityMotorR); //Liga o motor com uma velocidade x, no sentido horário
-        analogWrite(motor_RB_IN, 0); //Desliga o sentido ant-horário do motor
+        analogWrite(motor_LA_IP, speed); // Ativa no sentido anti-horário
+        analogWrite(motor_RB_IP, speed); // Ativa no sentido anti-horário
+        delay(rampTime / maxSpeed);
     }
+    delay(10);
 }
 
 // //Função que fará o carrinho andar para Sudeste
@@ -412,9 +373,9 @@ void setup(){
 }
 
 void loop(){
-    stopCar(7000);
-    Esquerda(3000);
+    stopCar(8000);
+    Ne(500);
     stopCar(3000);
-    Direita(3000);
+    moveForward(600);
     stopCar(3000);
 }
