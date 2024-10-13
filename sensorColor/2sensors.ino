@@ -1,4 +1,4 @@
-#include <SoftWire.h>
+#include "ESP32_SoftWire.h"
 #include "Adafruit_TCS34725softi2c.h"
 
 // Cria instâncias do SoftWire para cada sensor
@@ -6,14 +6,14 @@ SoftWire wire1 = SoftWire();
 SoftWire wire2 = SoftWire();
 
 // Cria instâncias dos sensores usando os barramentos SoftWire
-Adafruit_TCS34725 colorSensor = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X, &wire1);
-Adafruit_TCS34725 tcs2 = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X, &wire2);
+Adafruit_TCS34725softi2c  colorSensor = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X, &wire1);
+Adafruit_TCS34725softi2c  tcs2 = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X, &wire2);
 
-#include <Wire.h>
-#include <Adafruit_TCS34725.h>
-#include <cmath> // Adicione esta linha para usar sqrt
+// #include <Wire.h>
+// #include <Adafruit_TCS34725.h>
+// #include <cmath> // Adicione esta linha para usar sqrt
 
-Adafruit_TCS34725 colorSensor = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X); //240 1x
+//Adafruit_TCS34725 colorSensor = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X); //240 1x
 
 int calibR = 0;
 int calibG = 0;
@@ -33,16 +33,18 @@ String ColorTcs;
 
 void checkSensorsColor() {
     if (colorSensor.begin()) {
-        Serial.println("Sensor encontrado");
+        Serial.println("Sensor frente encontrado");
+    } else {
+        Serial.println("Sensor frente não encontrado");
     }
-    else {
-        Serial.println("Sensor frente não encontrado")
-    } if (tcs2.begin()){
-        Serial.println("Sensor trás encontrado")
-    }   else {
-        Serial.println("Sensor trás não encontrado")
+
+    if (tcs2.begin()) {
+        Serial.println("Sensor trás encontrado");
+    } else {
+        Serial.println("Sensor trás não encontrado");
     }
 }
+
 
 void calibratorColors() {
     delay(3000);

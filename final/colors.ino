@@ -1,4 +1,4 @@
-#include <SoftWire.h>
+#include "ESP32_SoftWire.h"
 #include "Adafruit_TCS34725softi2c.h"
 
 // Cria instâncias do SoftWire para cada sensor
@@ -6,14 +6,14 @@ SoftWire wire1 = SoftWire();
 SoftWire wire2 = SoftWire();
 
 // Cria instâncias dos sensores usando os barramentos SoftWire
-Adafruit_TCS34725 colorSensor = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X, &wire1);
-Adafruit_TCS34725 tcs2 = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X, &wire2);
+Adafruit_TCS34725softi2c  colorSensor = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X, &wire1);
+Adafruit_TCS34725softi2c  tcs2 = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X, &wire2);
 
-#include <Wire.h>
-#include <Adafruit_TCS34725.h>
-#include <cmath> // Adicione esta linha para usar sqrt
+// #include <Wire.h>
+// #include <Adafruit_TCS34725.h>
+// #include <cmath> // Adicione esta linha para usar sqrt
 
-Adafruit_TCS34725 colorSensor = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X); //240 1x
+//Adafruit_TCS34725 colorSensor = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X); //240 1x
 
 int calibR = 0;
 int calibG = 0;
@@ -33,30 +33,32 @@ String ColorTcs;
 
 void checkSensorsColor() {
     if (colorSensor.begin()) {
-        Serial.println("Sensor encontrado");
+        Serial.println("Sensor frente encontrado");
+    } else {
+        Serial.println("Sensor frente não encontrado");
     }
-    else {
-        Serial.println("Sensor frente não encontrado")
-    } if (tcs2.begin()){
-        Serial.println("Sensor trás encontrado")
-    }   else {
-        Serial.println("Sensor trás não encontrado")
+
+    if (tcs2.begin()) {
+        Serial.println("Sensor trás encontrado");
+    } else {
+        Serial.println("Sensor trás não encontrado");
     }
 }
+
 
 void calibratorColors() {
     delay(3000);
     uint16_t r, g, b, c;
     colorSensor.getRawData(&r, &g, &b, &c);
        
-    Serial.print("Não Calibradas: R=");
-    Serial.print(r);
-    Serial.print(", G=");
-    Serial.print(g);
-    Serial.print(", B=");
-    Serial.print(b);
-    Serial.print(", C=");
-    Serial.print(c);
+    // Serial.print("Não Calibradas: R=");
+    // Serial.print(r);
+    // Serial.print(", G=");
+    // Serial.print(g);
+    // Serial.print(", B=");
+    // Serial.print(b);
+    // Serial.print(", C=");
+    // Serial.print(c);
   
     delay(3000);
     calibR = r / 2.26;
@@ -71,27 +73,27 @@ void calibratorColors() {
     calibWB = b / 1.155; //1.178
     calibW = (r + b + g) / 1.158;
 
-    Serial.println("Cores calibradas.");
-    Serial.print("Calibrações: R=");
-    Serial.print(calibR);
-    Serial.print(", G=");
-    Serial.print(calibG);
-    Serial.print(", B=");
-    Serial.print(calibB);
-    Serial.print(", BR=");
-    Serial.print(calibBR);
-    Serial.print(", BG=");
-    Serial.print(calibBG);
-    Serial.print(", BB=");
-    Serial.print(calibBB);
-    Serial.print(", WR=");
-    Serial.print(calibWR);
-    Serial.print(", WG=");
-    Serial.print(calibWG);
-    Serial.print(", WB=");
-    Serial.println(calibWB);
-    Serial.print(", W=");
-    Serial.println(calibW);
+    // Serial.println("Cores calibradas.");
+    // Serial.print("Calibrações: R=");
+    // Serial.print(calibR);
+    // Serial.print(", G=");
+    // Serial.print(calibG);
+    // Serial.print(", B=");
+    // Serial.print(calibB);
+    // Serial.print(", BR=");
+    // Serial.print(calibBR);
+    // Serial.print(", BG=");
+    // Serial.print(calibBG);
+    // Serial.print(", BB=");
+    // Serial.print(calibBB);
+    // Serial.print(", WR=");
+    // Serial.print(calibWR);
+    // Serial.print(", WG=");
+    // Serial.print(calibWG);
+    // Serial.print(", WB=");
+    // Serial.println(calibWB);
+    // Serial.print(", W=");
+    // Serial.println(calibW);
 }
 
 void identifyColor(uint16_t rp, uint16_t gp, uint16_t bp, uint16_t cp, String &cor) {
@@ -119,14 +121,14 @@ void readTcs() {
     colorSensor.getRawData(&r, &g, &b, &c);
     identifyColor(r, g, b, c, ColorTcs);
 
-    // Serial.print("Cores de leitura R=");
-    // Serial.print(r);
-    // Serial.print(", G=");
-    // Serial.print(g);
-    // Serial.print(", B=");
-    // Serial.print(b);
-    // Serial.print(", C=");
-    // Serial.print(c);
+    Serial.print("Cores de leitura R=");
+    Serial.print(r);
+    Serial.print(", G=");
+    Serial.print(g);
+    Serial.print(", B=");
+    Serial.print(b);
+    Serial.print(", C=");
+    Serial.print(c);
 
     Serial.println("Cor detectada: " + ColorTcs);
 }
