@@ -1,7 +1,7 @@
-#define sensorIndutivo A0
-#define triggerPin 6
-#define echoPin 7
-int cm = 0;
+#define triggerPin 15
+#define echoPin 17
+float cm = 0;
+float acumulado = 0;
 
 void setUltra(){
     pinMode(triggerPin, OUTPUT); // Clear the trigger
