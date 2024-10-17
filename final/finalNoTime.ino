@@ -271,9 +271,9 @@ void stopCar(unsigned int timeMotor) {
     Função: moveBackward
     Descrição: Move o carro para trás por um tempo determinado.
 */
-void moveBackward(unsigned int timeMotor) {
+void moveBackward(/*unsigned int timeMotor*/) {
 
-    stopMotors();
+    //stopMotors();
   // Mover carro para trás
     for (int speed = minSpeed; speed <= maxSpeed; speed++) {
         analogWrite(motor_RB_IN, speed); // Ativa o motor B no sentido ant-horário com a velocidade definida
@@ -284,7 +284,7 @@ void moveBackward(unsigned int timeMotor) {
 
     }
 
-    delay(timeMotor); // Aguarda pelo tempo especificado (timeMotor) antes de continuar
+   // delay(timeMotor); // Aguarda pelo tempo especificado (timeMotor) antes de continuar
 
     for (int speed = maxSpeed; speed >= minSpeed; speed--) {
         analogWrite(motor_RB_IN, speed); // Ativa o motor B no sentido ant-horário com a velocidade definida
@@ -299,9 +299,9 @@ void moveBackward(unsigned int timeMotor) {
     Função: moveForward
     Descrição: Move o carro para frente por um tempo determinado.
 */
-void moveForward(unsigned int timeMotor) {
+void moveForward(/*unsigned int timeMotor*/) {
 
-    stopMotors();
+    //stopMotors();
     // Mover carro para frente
     for (int speed = minSpeed; speed <= maxSpeed; speed++) {
         analogWrite(motor_RA_IP, speed); // Ativa o motor A no sentido horário com a velocidade definida
@@ -312,7 +312,7 @@ void moveForward(unsigned int timeMotor) {
         delay(rampTime / maxSpeed);
     }
 
-    delay(timeMotor); // Aguarda pelo tempo especificado (timeMotor) antes de continuar
+    //delay(timeMotor); // Aguarda pelo tempo especificado (timeMotor) antes de continuar
 
     for (int speed = maxSpeed; speed >= minSpeed; speed--) {
         analogWrite(motor_RA_IP, speed); // Ativa o motor A no sentido horário com a velocidade definida
@@ -324,11 +324,11 @@ void moveForward(unsigned int timeMotor) {
     }
 }
 
-void Direita (int timeMotor) {
+void Direita (/*unsigned int timeMotor*/) {
 // MotorFrontLeft - MotorBackRight (Mesma direção) Horário
 // MotorFrontRight	- MotorBackLeft (Mesma direção) Ant-Horário
 
-    stopMotors();
+    //stopMotors();
 
     for (int speed = minSpeed; speed <= maxSpeed; speed++) {
         analogWrite(motor_RA_IN, speed); //Liga o motor com uma velocidade x, no sentido ant-horário
@@ -342,7 +342,7 @@ void Direita (int timeMotor) {
         delay(rampTime / maxSpeed);
     }   
 
-    delay(timeMotor);  // Tempo de movimento na velocidade máxima
+    //delay(timeMotor);  // Tempo de movimento na velocidade máxima
 
     for (int speed = maxSpeed; speed >= minSpeed; speed--) {
         analogWrite(motor_RA_IN, speed); //Liga o motor com uma velocidade x, no sentido ant-horário
@@ -359,11 +359,11 @@ void Direita (int timeMotor) {
 }
 
 //Função que fará o carrinho andar para Esquerda
-void Esquerda(int timeMotor) {
+void Esquerda(/*unsigned int timeMotor*/) {
     // MotorFrontLeft - MotorBackRight (Mesma direção) Ant-Horário
     // MotorFrontRight - MotorBackLeft (Mesma direção) Horário
 
-    stopMotors();
+    //stopMotors();
 
      for (int speed = minSpeed; speed <= maxSpeed; speed++) {
         // Ativa os motores do lado direito (sentido ant-horário)
@@ -377,7 +377,7 @@ void Esquerda(int timeMotor) {
         delay(rampTime / maxSpeed);
      }
 
-    delay(timeMotor);  // Tempo de movimento na velocidade máxima
+    //delay(timeMotor);  // Tempo de movimento na velocidade máxima
 
      for (int speed = maxSpeed; speed >= minSpeed; speed--) {
         // Ativa os motores do lado direito (sentido ant-horário)
@@ -396,9 +396,9 @@ void Esquerda(int timeMotor) {
     Descrição: Vira o carro para a direita.
 */
 
-void turnRight(unsigned int timeMotor) {
+void turnRight(/*unsigned int timeMotor*/) {
     // Parar todos os motores antes de executar a virada
-    stopMotors();
+    //stopMotors();
 
 
     for (int speed = minSpeed; speed <= maxSpeed; speed++) {
@@ -407,7 +407,7 @@ void turnRight(unsigned int timeMotor) {
         delay(rampTime / maxSpeed);
     }
 
-    delay(timeMotor); // Aguarda pelo tempo especificado antes de continuar
+   // delay(timeMotor); // Aguarda pelo tempo especificado antes de continuar
 
     for (int speed = maxSpeed; speed >= minSpeed; speed--) {
         analogWrite(motor_RA_IN, speed); // Ativa o motor do lado direito no sentido anti-horário
@@ -421,9 +421,9 @@ void turnRight(unsigned int timeMotor) {
 //     Descrição: Vira o carro para a esquerda.
 // */
 
-void turnLeft(unsigned int timeMotor) {
+void turnLeft(/*unsigned int timeMotor*/) {
     // Parar todos os motores antes de executar a virada
-    stopMotors();
+    //stopMotors();
 
     for (int speed = minSpeed; speed <= maxSpeed; speed++) {
         analogWrite(motor_LA_IN, speed); // Ativa o motor do lado esquerdo no sentido anti-horário
@@ -431,7 +431,7 @@ void turnLeft(unsigned int timeMotor) {
         delay(rampTime / maxSpeed);  
     }
 
-    delay(timeMotor); // Aguarda pelo tempo especificado antes de continuar
+    //delay(timeMotor); // Aguarda pelo tempo especificado antes de continuar
 
     for (int speed = maxSpeed; speed >= minSpeed; speed--) {
         analogWrite(motor_LA_IN, speed); // Ativa o motor do lado esquerdo no sentido anti-horário
@@ -440,8 +440,8 @@ void turnLeft(unsigned int timeMotor) {
     }
 }
 
-void gEd(unsigned int timeMotor){
-    stopMotors();
+void gEd(/*unsigned int timeMotor*/){
+    //stopMotors();
 
     for (int speed = minSpeed; speed <= maxSpeed; speed++) {
         analogWrite(motor_LA_IP, speed); // Ativa o motor do lado esquerdo no sentido anti-horário
@@ -455,7 +455,7 @@ void gEd(unsigned int timeMotor){
         delay(rampTime / maxSpeed);  
     }
 
-    delay(timeMotor); // Aguarda pelo tempo especificado antes de continuar
+   // delay(timeMotor); // Aguarda pelo tempo especificado antes de continuar
 
     for (int speed = maxSpeed; speed >= minSpeed; speed--) {
         analogWrite(motor_LA_IP, speed); // Ativa o motor do lado esquerdo no sentido anti-horário
@@ -469,8 +469,8 @@ void gEd(unsigned int timeMotor){
     }
 }
 
-void gEe(unsigned int timeMotor){
-    stopMotors();
+void gEe(/*unsigned int timeMotor*/){
+    //stopMotors();
 
     for (int speed = minSpeed; speed <= maxSpeed; speed++) {
         analogWrite(motor_LA_IN, speed); // Ativa o motor do lado esquerdo no sentido anti-horário
@@ -484,7 +484,7 @@ void gEe(unsigned int timeMotor){
         delay(rampTime / maxSpeed);  
     }
 
-    delay(timeMotor); // Aguarda pelo tempo especificado antes de continuar
+    //delay(timeMotor); // Aguarda pelo tempo especificado antes de continuar
 
     for (int speed = maxSpeed; speed >= minSpeed; speed--) {
         analogWrite(motor_LA_IN, speed); // Ativa o motor do lado esquerdo no sentido anti-horário
@@ -500,8 +500,8 @@ void gEe(unsigned int timeMotor){
 
 
 //Função que fará o carrinho andar para Sudoeste
-void So(unsigned int timeMotor) {
-  stopMotors();
+void So(/*unsigned int timeMotor*/) {
+  //stopMotors();
     // Liga os motores adequadamente para mover para sudoeste
     for (int speed = minSpeed; speed <= maxSpeed; speed++) {
         analogWrite(motor_LA_IN, speed); // Ativa no sentido anti-horário
@@ -509,7 +509,7 @@ void So(unsigned int timeMotor) {
         delay(rampTime / maxSpeed);
     }
 
-    delay(timeMotor); // Aguarda pelo tempo especificado antes de continuar
+   // delay(timeMotor); // Aguarda pelo tempo especificado antes de continuar
 
     for (int speed = maxSpeed; speed >= minSpeed; speed--) {
         analogWrite(motor_LA_IN, speed); // Ativa no sentido anti-horário
@@ -522,7 +522,7 @@ void So(unsigned int timeMotor) {
 
 //Função que fará o carrinho andar para Nordeste
 void Ne(){
-  stopMotors();
+  //stopMotors();
     // Liga os motores adequadamente para mover para sudoeste
     for (int speed = minSpeed; speed <= maxSpeed; speed++) {
         analogWrite(motor_LA_IP, speed); // Ativa no sentido anti-horário
@@ -580,12 +580,27 @@ void fixRight() {
     digitalWrite(motor_LA_IP, HIGH);
 }
 
-
 void pegarArvore(){
 
 }
 
-void descerArvore(){
+void pegarArvore2(){
+
+}
+
+void descerArvoreG(){
+
+}
+
+void descerArvoreG2(){
+
+}
+
+void descerArvoreP(){
+
+}
+
+void descerArvoreP2(){
 
 }
 
@@ -597,6 +612,90 @@ void fixrote() {
     }
 }
 
+//Ha a possibilidade de isto estar errado
+void arvoreG(){
+    if(ultra1 <= X && ultra2 <= X){
+        stopMotors();
+        pegarArvore();
+        delay(2000);
+        while (true)
+        {
+            moveForward();
+            //Aqui
+            //Se o carro estiver andando torto colocar o fixrote em cima
+            if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
+                stopMotors();
+                descerArvoreG();
+                delay(1000);
+                break;
+            }
+            fixrote();
+        }
+        // while (true)
+        // {
+            // moveBackward();
+            //Aqui
+            //Se o carro estiver andando torto colocar o fixrote em cima
+            //Pra não ter outra função a lógica da arvore pequena vem aq
+            //Automaticamente não há necessecidade de verificar se é pequena ou grande, poi uma já terá sido eliminada(enfiada no lugar certo)
+            //if(Ultra1 <= X && Ultra2 > X){
+                stopMotors();
+                pegarArvore2();
+                delay(2000);
+                //moveForward();
+                //if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
+                    descerArvoreP2();
+                    delay(2000);
+                    break;
+              //  }
+            // }
+            // fixrote();
+        //}   
+        break;   
+    }
+}
+
+void arvoreP(){
+if(ultra1 <= X && ultra2 > X){
+        stopMotors();
+        pegarArvore();
+        delay(2000);
+        while (true)
+        {
+            moveForward();
+            //Aqui
+            //Se o carro estiver andando torto colocar o fixrote em cima
+            if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
+                stopMotors();
+                descerArvoreP();
+                delay(1000);
+                break;
+            }
+            fixrote();
+        }
+        // while (true)
+        // {
+            // moveBackward();
+            //Aqui
+            //Se o carro estiver andando torto colocar o fixrote em cima
+            //Pra não ter outra função a lógica da arvore pequena vem aq
+            //Automaticamente não há necessecidade de verificar se é pequena ou grande, poi uma já terá sido eliminada(enfiada no lugar certo)
+            //if(Ultra1 <= X && Ultra2 > X){
+                //stopMotors();
+                pegarArvore2();
+                delay(2000);
+                //moveForward();
+               // if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
+                    descerArvoreG2();
+                    delay(2000);
+                    break;
+              //  }
+            // }
+            // fixrote();
+        //}  
+        break;    
+    }
+}
 
 void setup(){
     Serial.begin(115200);
@@ -609,9 +708,48 @@ void setup(){
     // Criar as tarefas
     xTaskCreatePinnedToCore(mediaUltrassomTask, "Media Ultrassom", 2048, NULL, 1, NULL, 1); // Núcleo 1
     xTaskCreatePinnedToCore(mediaLDRTask, "Media LDR", 2048, NULL, 1, NULL, 0); // Núcleo 0
+    delay(100);
+    Ne();
 }
 
 void loop(){
+    if(LDR1 == 0 && LDR2 == 1 && LDR3 ==0){
+        stopCar(200);
+        while (true)
+        {
+            moveForward();
+            fixrote();
+            arvoreG(); //Se for a arvore grande ele captura a arvre grande e depois a pequena dentro da função
+            arvoreP(); //Se for a arvore pequena ele captura a arvre pequena e depois a grande dentro da função
+            //Se verdadeiro uma das duas, o while da break e a missão arvore foi executada
+            fixrote();
+        }
+        stopCar(200);
+        while (true)
+        {
+            moveBackward();
+            if(LDR1 == 0 && LDR2 == 1 && LDR3 == 1){
+                stopCar(200);
+                turnRight();
+                if(LDR1 == 0 && LDR2 == 1 && LDR3 == 0){
+                    stopCar(200);
+                    break;
+                }
+            }
+            fixrote();
+        }
+        while (true)
+        {
+            moveForward();
+            if(LDR1 == 1 && LDR 2 == 1 && LDR3 == 1){
+                stopCar(200);
+                break;
+            }
+            fixrote();
+
+        }        
+    }
+
 //   delay(2000);
 //   Serial.print("Loop OK");
   //mediaUltrassom();
@@ -619,67 +757,67 @@ void loop(){
   //mediaUltrassomTask("Media Ultrassom", 2048, NULL, 1, NULL, 1); // Núcleo 1
 
     //Robo inicia andando de lado NE
-    while(counter == 0){
-        Ne();
-        //Se esquerda for branco, centro preto, direita branco
-        if (LDR1 == 0 && LDR2 == 1 && LDR3 == 0){
-            stopCar(300);
-            while (true)
-            {
-                moveForward();
-                fixrote();
-                if( ultra1 <= X && ultra2 <= X){
-                    stopCar(300);
-                    //Movimentação dos servos (Pegar a arvore e depois erguer a garra)
-                    //pegarArvore();
-                    while (true)
-                    {
-                        moveForward();
-                        fixrote();
-                        if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
-                            stopMotors();
-                            //desce a arvore
-                            //ergue a garra
-                            while (true)
-                            {
-                                moveBackward();
-                                fixrote();
-                                if (ultra1 <= X && ultra2 >= X){
-                                    stopMotors();
-                                    //pegar arvore pegarArvore();
-                                    while (true)
-                                    {
-                                        moveForward();
-                                        fixrote();
-                                        if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
-                                        stopMotors();
-                                        //desce a arvore
-                                        //ergue a garra
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+    // while(counter == 0){
+    //     Ne();
+    //     //Se esquerda for branco, centro preto, direita branco
+    //     if (LDR1 == 0 && LDR2 == 1 && LDR3 == 0){
+    //         stopCar(300);
+    //         while (true)
+    //         {
+    //             moveForward();
+    //             fixrote();
+    //             if( ultra1 <= X && ultra2 <= X){ //Logica Arvore grande
+    //                 stopCar(300);
+    //                 //Movimentação dos servos (Pegar a arvore e depois erguer a garra)
+    //                 //pegarArvore();
+    //                 while (true)
+    //                 {
+    //                     moveForward();
+    //                     fixrote();
+    //                     if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
+    //                         stopMotors();
+    //                         //desce a arvore
+    //                         //ergue a garra
+    //                         while (true)
+    //                         {
+    //                             moveBackward();
+    //                             fixrote();
+    //                             if (ultra1 <= X && ultra2 >= X){
+    //                                 stopMotors();
+    //                                 //pegar arvore pegarArvore();
+    //                                 while (true)
+    //                                 {
+    //                                     moveForward();
+    //                                     fixrote();
+    //                                     if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
+    //                                         stopMotors();
+    //                                         //desce a arvore
+    //                                         //ergue a garra
+    //                                     }
+    //                                 }
+    //                             }
+    //                         }
+    //                     }
+    //                 }
                     
-                    if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
-                        stopMotors();
-                    }
-                    arvore grande
+    //                 // if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
+    //                 //     stopMotors();
+    //                 // }
+    //                 arvore grande
 
-                } else if ( ultra1 <= X && ultra2 >= X){
-                    stopCar(300);
-                    //Movimentação dos servos (Pegar a arvore e depois erguer a garra)
-                    //pegarArvore();
-                    if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
-                        stopCar(300);
-                    }
-                    arvore pequena
-                } else{
-                    Serial.print("Erro ao encontrar arvores")
-                    break; // Sai do loop se não encontrar árvores
-                }
-            }
-        }
-    }
+    //             } else if ( ultra1 <= X && ultra2 >= X){
+    //                 stopCar(300);
+    //                 //Movimentação dos servos (Pegar a arvore e depois erguer a garra)
+    //                 //pegarArvore();
+    //                 if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
+    //                     stopCar(300);
+    //                 }
+    //                 arvore pequena
+    //             } else{
+    //                 Serial.print("Erro ao encontrar arvores")
+    //                 break; // Sai do loop se não encontrar árvores
+    //             }
+    //         }
+    //     }
+    // }
 }
