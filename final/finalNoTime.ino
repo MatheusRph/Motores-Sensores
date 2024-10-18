@@ -618,19 +618,19 @@ void arvoreG(){
         stopMotors();
         pegarArvore();
         delay(2000);
-        while (true)
-        {
-            moveForward();
+    //  while (true)
+      //  {
+        //    moveForward();
             //Aqui
             //Se o carro estiver andando torto colocar o fixrote em cima
-            if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
+            //if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
                 stopMotors();
                 descerArvoreG();
                 delay(1000);
-                break;
-            }
-            fixrote();
-        }
+                //break;
+            //}
+           // fixrote();
+        //}
         // while (true)
         // {
             // moveBackward();
@@ -646,33 +646,33 @@ void arvoreG(){
                 //if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
                     descerArvoreP2();
                     delay(2000);
-                    break;
+                  //  break;
               //  }
             // }
             // fixrote();
         //}   
-        break;   
+    //    break;   
     }
 }
 
 void arvoreP(){
-if(ultra1 <= X && ultra2 > X){
+    if(ultra1 <= X && ultra2 > X){
         stopMotors();
         pegarArvore();
         delay(2000);
-        while (true)
-        {
-            moveForward();
+       // while (true)
+    //  {
+            //moveForward();
             //Aqui
             //Se o carro estiver andando torto colocar o fixrote em cima
-            if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
+            //if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
                 stopMotors();
                 descerArvoreP();
                 delay(1000);
-                break;
-            }
-            fixrote();
-        }
+               // break;
+          //  }
+          //  fixrote();
+      //  }
         // while (true)
         // {
             // moveBackward();
@@ -688,12 +688,12 @@ if(ultra1 <= X && ultra2 > X){
                // if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
                     descerArvoreG2();
                     delay(2000);
-                    break;
+               //     break;
               //  }
             // }
             // fixrote();
         //}  
-        break;    
+       // break;    
     }
 }
 
