@@ -27,7 +27,9 @@
 #define servo_Pino_B 33 // Pino do Servo B
 #define servo_Pino_C 25 // Pino do Servo C
 #define servo_Pino_D 26 // Pino do Servo D
-#define qtdServos 4 //Informa a quantidade de Servos que serão ligados em cascata
+#define servo_Pino_E 5  // Pino de Servo E
+
+#define qtdServos 5 //Informa a quantidade de Servos que serão ligados em cascata
 
 /*Definição do arduino em geral*/
 #define D_in 16 //Nomeia o pino 6 do Arduino
@@ -37,7 +39,7 @@
 // ===================================
 
 /*Constantes dos servos*/
-const byte pinServos[qtdServos] = {servo_Pino_A, servo_Pino_B, servo_Pino_C, servo_Pino_D};
+const byte pinServos[qtdServos] = {servo_Pino_A, servo_Pino_B, servo_Pino_C, servo_Pino_D, servo_Pino_E};
 
 /*Constantes de velocidade*/
 // Constantes para definição da velocidade dos motores ao iniciar motor
@@ -89,7 +91,7 @@ String colorL; // Variável para armazenar a cor lida pelo sensor esquerdo
 String colorR; // Variável para armazenar a cor lida pelo sensor direito
 
 /*Variáveis sobre servo*/
-ServoEasing servos[qtdServos], servo_A, servo_B, servo_C, servo_D;
+ServoEasing servos[qtdServos], servo_A, servo_B, servo_C, servo_D, servo_E;
 
 /*Variáveis de tempo*/
 unsigned int timeXV = 14 +1;
@@ -112,9 +114,14 @@ void setServos(){
     servos[x].attach(pinServos[x]);// Conecta o servo ao pino definido no array pinServos.
     servos[x].setEasingType(EASE_CUBIC_IN_OUT);// Define o tipo de suavização do movimento do servo
     servos[x].setSpeed(70);//Estabelece a velocidade do movimento do servo.
-    servos[x].write(90);//Move o servo para a posição inicial de 90 graus.
+   // servos[x].write(90);//Move o servo para a posição inicial de 90 .
     delay(timeXV);//Tempo de espera de 15 segundos
     }
+  servos[32].write(90); // Move o servo para o ângulo especificado
+  servos[33].write(50); // Move o servo para o ângulo especificado
+  servos[25].write(170); // Move o servo para o ângulo especificado
+  servos[26].write(90); // Move o servo para o ângulo especificado
+  servos[5].write(0); // Move o servo para o ângulo especificado
 }
 
 /*
@@ -238,3 +245,153 @@ void loop() {
   //delay(20);
 //}
 */
+
+// ===================================
+//            Bibliotecas
+// ===================================
+
+#include <Arduino.h>
+#include <ServoEasing.hpp>
+#include <Adafruit_NeoPixel.h>
+#include <Adafruit_TCS34725.h>
+#include <Wire.h>
+#include <cmath>
+
+// ===================================
+//            Defines
+// ===================================
+
+#define SDA_PIN 21
+#define SCL_PIN 22
+
+/*Definição dos leds*/
+#define qtdeLeds 4 
+
+/*Definição dos Servos*/
+#define servo_Pino_A 32 // Pino do Servo A
+#define servo_Pino_B 33 // Pino do Servo B
+#define servo_Pino_C 25 // Pino do Servo C
+#define servo_Pino_D 26 // Pino do Servo D
+#define servo_Pino_E 5 // Pino do Servo E (Novo Servo)
+#define qtdServos 5 // Aumenta a quantidade de Servos para 5
+
+/*Definição do arduino em geral*/
+#define D_in 16 
+
+#define pos0 90
+#define pos1 50
+#define pos2 170
+#define pos3 90
+#define pos4 0 // Posição inicial para Servo E
+
+// ===================================
+//            Constantes
+// ===================================
+
+const byte pinServos[qtdServos] = {servo_Pino_A, servo_Pino_B, servo_Pino_C, servo_Pino_D, servo_Pino_E};
+
+/*Constantes de velocidade*/
+const byte velocityTurnMotorA = 0x32; 
+const byte velocityTurnMotorB = 0x32; 
+unsigned int timeMotor = 1000;  
+
+/*Constantes para definição dos pinos dos motores*/ 
+const byte motor_A_IN = 4; 
+const byte motor_A_IP = 2; 
+const byte motor_B_IN = 13;  
+const byte motor_B_IP = 27;  
+
+// ===================================
+//            Variáveis
+// ===================================
+
+byte velocityMotorA = 127; 
+byte velocityMotorB = 127; 
+
+String recebi;
+ServoEasing servos[qtdServos]; // Ajustado para 5 servos
+
+/*Variáveis de tempo*/
+unsigned int timeXV = 14 + 1;
+
+/*Variável para o led*/
+Adafruit_NeoPixel pixels(qtdeLeds, D_in); 
+uint8_t R = 255, G = 255, B = 255;
+
+// ===================================
+//            Funções
+// ===================================
+
+void setServos() {
+  for (int x = 0; x < qtdServos; x++) {
+    pinMode(pinServos[x], OUTPUT);
+    servos[x].attach(pinServos[x]);
+    servos[x].setEasingType(EASE_CUBIC_IN_OUT);
+    servos[x].setSpeed(70);
+    servos[x].write(pos4); // Usa a nova posição inicial para o Servo E
+    delay(timeXV);
+  }
+}
+
+void acionarServo(int numeroServo, int angulo) { 
+  if (numeroServo >= 0 && numeroServo < qtdServos) { 
+    servos[numeroServo].write(angulo);
+  } else { 
+    Serial.println("Número de servo inválido!");
+  }
+}
+
+// (Outras funções como servoEsquerda, servoDireita, showColors, setup e loop permanecem as mesmas, exceto onde o servo é acionado)
+
+void setup() {
+  Serial.begin(115200);
+  setServos(); 
+  delay(1000); 
+  Serial.println("Servos Iniciados");
+  delay(1000);
+  acionarServo(0, 90); // Servo A inicia em 90 graus
+  delay(5000);
+  acionarServo(1, pos1);
+  delay(5000);
+  acionarServo(2, pos2);
+  delay(5000);
+  acionarServo(3, pos3);
+  delay(5000);
+  acionarServo(4, pos4); // Aciona o Servo E na posição inicial
+  delay(5000);
+}
+
+void loop() {
+  acionarServo(0, 90); // Servo A inicia em 90 graus
+  delay(5000);
+  if (Serial.available() > 0) {
+    recebi = Serial.readStringUntil('\n');
+    Serial.println(recebi);
+    if (recebi.startsWith("G")) {
+      recebi.remove(0, 1);
+      int pos = recebi.toInt();
+      acionarServo(3, pos);
+      delay(20);
+    } else if (recebi.startsWith("M")) {
+      recebi.remove(0, 1);
+      int pos = recebi.toInt();
+      acionarServo(1, pos);
+      delay(20);
+    } else if (recebi.startsWith("P")) {
+      recebi.remove(0, 1);
+      int pos = recebi.toInt();
+      acionarServo(2, pos);
+      delay(20);
+    } else if (recebi.startsWith("C")) {
+      recebi.remove(0, 1);
+      int pos = recebi.toInt();
+      acionarServo(0, pos);
+      delay(200);
+    } else if (recebi.startsWith("E")) { // Comando para o Servo E
+      recebi.remove(0, 1);
+      int pos = recebi.toInt();
+      acionarServo(4, pos); // Aciona o Servo E
+      delay(200);
+    }
+  }
+}

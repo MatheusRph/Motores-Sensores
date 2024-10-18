@@ -36,12 +36,24 @@
 #define pinLine3 39 // Pino do seguidor de linha C
 #define qtdLine 3    // Informa a quantidade de sensores preto e branco serão usados
 
+/*Definição dos Servos*/
+#define servo_Pino_A 32 // Pino do Servo A
+#define servo_Pino_B 33 // Pino do Servo B
+#define servo_Pino_C 25 // Pino do Servo C
+#define servo_Pino_D 26 // Pino do Servo D
+#define servo_Pino_E 5  // Pino de Servo E
+
+#define qtdServos 5 //Informa a quantidade de Servos que serão ligados em cascata
+
 /*Definição do arduino em geral*/
 #define D_in 16 //Nomeia o pino 6 do Arduino
 
 // ===================================
 //            Constantes
 // ===================================
+
+/*Constantes dos servos*/
+const byte pinServos[qtdServos] = {servo_Pino_A, servo_Pino_B, servo_Pino_C, servo_Pino_D, servo_Pino_E};
 
 /*Constantes de velocidade*/
 // Constantes para definição da velocidade dos motores ao iniciar motor
@@ -82,6 +94,9 @@ int rampTime = 1000;
 int minSpeed = 65;
 int maxSpeed = 85;
 
+/*Variáveis sobre servo*/
+ServoEasing servos[qtdServos], servo_A, servo_B, servo_C, servo_D, servo_E;
+
 // Variáveis para definição da velocidade dos motores
 byte velocityMotorR = 200; // Velocidade dos motores do lado Direito
 byte velocityMotorL = 200; // Velocidade do Motor do lado esquerdo
@@ -94,6 +109,80 @@ float cm = 0, acumulado = 0, mediaMovelUltrassom = 0, mediaMovelLDR = 0;
 // ===================================
 //            Funções
 // ===================================
+
+void setServos(){
+  for (int x = 0; x < qtdServos; x++){
+    pinMode(pinServos[x], OUTPUT);//Define pino servo e saída de energia 
+    servos[x].attach(pinServos[x]);// Conecta o servo ao pino definido no array pinServos.
+    servos[x].setEasingType(EASE_CUBIC_IN_OUT);// Define o tipo de suavização do movimento do servo
+    servos[x].setSpeed(70);//Estabelece a velocidade do movimento do servo.
+   // servos[x].write(90);//Move o servo para a posição inicial de 90 .
+    delay(timeXV);//Tempo de espera de 15 segundos
+    }
+  servos[32].write(90); // Move o servo para o ângulo especificado
+  servos[33].write(50); // Move o servo para o ângulo especificado
+  servos[25].write(170); // Move o servo para o ângulo especificado
+  servos[26].write(90); // Move o servo para o ângulo especificado
+  servos[5].write(0); // Move o servo para o ângulo especificado
+}
+
+/*
+    Função: acionarServo
+    Descrição: Aciona um servomotor específico para um ângulo determinado.
+*/
+void acionarServo(int numeroServo, int angulo) { 
+    // Verifica se o número do servo está dentro do intervalo válido
+    if (numeroServo >= 0 && numeroServo < qtdServos) { 
+    servos[numeroServo].write(angulo); // Move o servo para o ângulo especificado
+    } else { // Caso o número do servo não seja válido
+    Serial.println("Número de servo inválido!"); // Imprime mensagem de erro no console
+    }
+}
+
+/*
+    Função: servoEsquerda
+    Descrição: Gira o servo especificado para a esquerda e retorna à posição inicial.
+*/
+void servoEsquerda(int numeroServo) { 
+    // Verifica se o número do servo está dentro do intervalo válido
+    if (numeroServo >= 0 && numeroServo < qtdServos) {
+    // Move o servo de 90 graus até 180 graus
+    for (int pos = 90; pos <= 180; pos += 1) { 
+        servos[numeroServo].write(pos); // Define a posição do servo
+        delay(timeXV); // Aguarda um tempo definido antes de mudar a posição
+    }
+    // Move o servo de 180 graus de volta para 90 graus
+    for (int pos = 180; pos >= 90; pos -= 1) { 
+        servos[numeroServo].write(pos); // Define a posição do servo
+        delay(timeXV); // Aguarda um tempo definido antes de mudar a posição
+    }
+    } else { // Caso o número do servo não seja válido
+        Serial.println("Número de servo inválido!"); // Imprime mensagem de erro no console
+  }
+}
+
+
+/*
+    Função: servoDireita
+    Descrição: Gira o servo especificado para a direita e retorna à posição inicial.
+*/
+void servoDireita(int numeroServo) { 
+  // Verifica se o número do servo está dentro do intervalo válido
+  if (numeroServo >= 0 && numeroServo < qtdServos) {
+    // Move o servo de 90 graus até 0 graus
+    for (int pos = 90; pos >= 0; pos -= 1) { 
+      servos[numeroServo].write(pos); // Define a posição do servo
+      delay(timeXV); // Aguarda um tempo definido antes de mudar a posição
+    }
+    // Move o servo de 0 graus de volta para 90 graus
+    for (int pos = 0; pos <= 90; pos += 1) { 
+      servos[numeroServo].write(pos); // Define a posição do servo
+      delay(timeXV); // Aguarda um tempo definido antes de mudar a posição
+    }
+  } else { // Caso o número do servo não seja válido
+    Serial.println("Número de servo inválido!"); // Imprime mensagem de erro no console
+  }
+}
 
 /*
     Função: setLine
@@ -703,6 +792,7 @@ void setup(){
       delay(10);
     }
     setUltra();
+    setServos(); //configura os servos
     setLDR();
     //setMotors();
     // Criar as tarefas
