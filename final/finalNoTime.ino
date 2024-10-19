@@ -26,9 +26,14 @@
 /*Definição sensor ultrassônico*/
 #define triggerPin 19
 #define echoPin 18
+#define echoPin2 34
+#define QTD_ULTRA 2
 
 //Definição do Pino do LDR
-#define pinLDR 34
+#define pinLDR0 39
+#define pinLDR1 35
+#define pinLDR2 36
+#define QTD_LDR 3
 
 /* Definição dos Pinos do seguidor de linha */
 #define pinLine1 36 // Pino do seguidor de linha A
@@ -53,6 +58,23 @@
 // ===================================
 
 /*Constantes dos servos*/
+
+// Enum para os servos
+enum ServoNames {
+    B = 0,
+    O = 1,
+    C = 2,
+    M = 3,
+    G = 4,
+    TOTAL_SERVOS // Adiciona um total para facilitar futuras validações
+};
+
+const byte pinUltra[] ={echoPin, echoPin2};
+
+const byte pinLDRS[] = {pinLDR0, pinLDR1, pinLDR2};
+const byte ColorsLDR[] = {0,0,0};
+const int QTD_LEITURA_LDR = 100;
+
 const byte pinServos[qtdServos] = {servo_Pino_A, servo_Pino_B, servo_Pino_C, servo_Pino_D, servo_Pino_E};
 
 /*Constantes de velocidade*/
@@ -85,7 +107,7 @@ const byte motor_LB_IN = 17;  // Pino de entrada negativa do Motor B (Faz a roda
 const byte motor_LB_IP = 12;  //Pino de entrada positiva do Motor B (Faz a roda girar no sentido horário)
 
 /*Matriz para fazer um for automatizando o processo*/
-const byte pinLine[qtdLine] = {pinLine1, pinLine2, pinLine3}; // Matriz de pinos
+// const byte pinLine[qtdLine] = {pinLine1, pinLine2, pinLine3}; // Matriz de pinos
 
 // ===================================
 //            Variáveis
@@ -105,7 +127,7 @@ byte velocityMotorL = 200; // Velocidade do Motor do lado esquerdo
 unsigned int timeXV = 14 +1;
 
 /*Variáveis para o sensor ultrassônico*/
-float cm = 0, acumulado = 0, mediaMovelUltrassom = 0, mediaMovelLDR = 0;
+float cm = 0, acumulado = 0, mediaMovelUltrassom[] = {0, 0}, mediaMovelLDR[] = {0,0,0};
 // ===================================
 //            Funções
 // ===================================
@@ -130,13 +152,23 @@ void setServos(){
     Função: acionarServo
     Descrição: Aciona um servomotor específico para um ângulo determinado.
 */
-void acionarServo(int numeroServo, int angulo) { 
+void acionarServo(ServoNames nomeServo, int angulo) {
+     int numeroServo = static_cast<int>(nomeServo); // Converte para inteiro
     // Verifica se o número do servo está dentro do intervalo válido
-    if (numeroServo >= 0 && numeroServo < qtdServos) { 
-    servos[numeroServo].write(angulo); // Move o servo para o ângulo especificado
+    if (numeroServo >= 0 && numeroServo < qtdServos) {
+        int anguloAtual = servos[numeroServo].read(); // Lê o ângulo atual do servo
+        int incremento = (angulo > anguloAtual) ? 1 : -1; // Define o incremento
+
+        for (int n = anguloAtual; n != angulo; n += incremento) {
+            servos[numeroServo].write(n); // Move o servo para o ângulo especificado
+            delay(20);
+        }
+        
+        servos[numeroServo].write(angulo); // Garante que o servo chegue ao ângulo final
     } else { // Caso o número do servo não seja válido
-    Serial.println("Número de servo inválido!"); // Imprime mensagem de erro no console
+        Serial.println("Número de servo inválido!"); // Imprime mensagem de erro no console
     }
+    delay(400);
 }
 
 /*
@@ -188,21 +220,23 @@ void servoDireita(int numeroServo) {
     Função: setLine
     Descrição: Configura os pinos do seguidor de linha
 */
+/*
 void setLine() {
     for (int x = 0; x < qtdLine; x++) {
         pinMode(pinLine[x], INPUT); // Define pino como entrada
         delay(timeXV); // Tempo de espera
     }
 }
+*/
 
 /*
     Função: readPin
     Descrição: Le o pino escolhido do seguidor de linha
 */
-int readPin(int pino) { // Change return type to int
-    return digitalRead(pinLine[pino]);
-    delay(10);
-}
+// int readPin(int pino) { // Change return type to int
+//     return digitalRead(pinLine[pino]);
+//     delay(10);
+// }
 
 /*
     Função: setUltra
@@ -210,21 +244,23 @@ int readPin(int pino) { // Change return type to int
 */
 void setUltra(){
     pinMode(triggerPin, OUTPUT); // Clear the trigger
-    pinMode(echoPin, INPUT);
+    for (int x == 0; x < QTD_ULTRA, x++){
+        pinMode(pinUltra[x], INPUT);
+    }
 }
 
 /*
     Função: readUltrasonicDistance
     Descrição: Se os valores do pino echo do sensor ultrassônico 
 */
-long readUltrasonicDistance()
+long readUltrasonicDistance(int numUltra)
 {
     digitalWrite(triggerPin, LOW);
     delayMicroseconds(2);
     digitalWrite(triggerPin, HIGH);
     delayMicroseconds(10);
     digitalWrite(triggerPin, LOW);
-    return pulseIn(echoPin, HIGH);
+    return pulseIn(numUltra, HIGH);
 }
 /*
 float mediaUltrassom() {
@@ -242,43 +278,65 @@ float mediaUltrassom() {
 }
 */
 void setLDR(){
-  pinMode(pinLDR, INPUT);
+    for( int x = 0; x < QTD_LDR; x++){
+        pinMode(pinLDRS[x], INPUT);
+        delay(1);
+    }
+  
 }
 
 //////////////////////////////////////////////////////
 // Função que calcula a média da leitura do ultrassom
 void mediaUltrassomTask(void *pvParameters) {
-  while (true) {
-        float acumulado = 0;
-        for (int i = 0; i < 10; i++) {
-            cm = 0.01723 * readUltrasonicDistance(); // Converte a duração para centímetros
-            acumulado += cm; // Soma o valor lido
-            delay(10); // Aguarda um pouco entre as leituras
+    while (true) {
+        for (int x = 0; x < QTD_ULTRA; x++){
+            float acumulado = 0;
+            for (int i = 0; i < 10; i++) {
+                cm = 0.01723 * readUltrasonicDistance([x]); // Converte a duração para centímetros
+                acumulado += cm; // Soma o valor lido
+                delay(10); // Aguarda um pouco entre as leituras
+            }
+            mediaMovelUltrassom[x] = acumulado / 10.0; // Retorna a média
+            Serial.print("Distancia em cm: ");
+            Serial.println(mediaMovelUltrassom[x]); 
+            if (mediaMovelUltrassom[x] >= 1204){
+                vTaskDelete(NULL); // Encerra a tarefa
+            }
+            vTaskDelay(1000 / portTICK_PERIOD_MS); // Aguarda 1 segundo antes da próxima execução
         }
-        mediaMovelUltrassom = acumulado / 10.0; // Retorna a média
-        Serial.print("Distancia em cm: ");
-        Serial.println(mediaMovelUltrassom); 
-        if (mediaMovelUltrassom >= 1204){
-            vTaskDelete(NULL); // Encerra a tarefa
-        }
-        vTaskDelay(1000 / portTICK_PERIOD_MS); // Aguarda 1 segundo antes da próxima execução
-  }
+    }
 }
 
 // Função que calcula a média da leitura do LDR
 void mediaLDRTask(void *pvParameters) {
    while (true) {
-        double acumulo = 0;
-        for (int i = 0; i < 100; i++) {
-            int valueLDR = analogRead(pinLDR);
-            acumulo += valueLDR; // Soma o valor lido
-            delay(1); // Aguarda um pouco entre as leituras
+        for (int x = 0; x < QTD_LDR; x++){
+            double acumulo = 0;
+            for (int i = 0; i < QTD_LEITURA_LDR; i++) {
+                int valueLDR = analogRead(pinLDRS[x]);
+                acumulo += valueLDR; // Soma o valor lido
+                delay(1); // Aguarda um pouco entre as leituras
+            }
+            mediaMovelLDR[x] = acumulo / QTD_LEITURA_LDR; // Retorna a média
+            Serial.print("valor LDR: ");
+            Serial.print(x);
+            Serial.print(" : ");
+            Serial.println(mediaMovelLDR[x]);
+            delay(1);
         }
-        mediaMovelLDR = acumulo / 100.0; // Retorna a média
-        Serial.print("valor LDR: ");
-        Serial.println(mediaMovelLDR); 
-        vTaskDelay(1000 / portTICK_PERIOD_MS); // Aguarda 1 segundo antes da próxima execução
+        ColorLDR();
+        vTaskDelay(500 / portTICK_PERIOD_MS); // Aguarda 1 segundo antes da próxima execução
   }
+}
+
+void ColorLDR(){
+        for (int x = 0; x < QTD_LDR; x++){
+            if (mediaMovelLDR[x] >= 3940){
+                ColorsLDR[x] = 1
+            } else if (mediaMovelLDR[x] <= 3900) {
+                ColorsLDR[x] = 0
+            }
+        }
 }
 /*
 double mediaLDR() {
@@ -669,27 +727,44 @@ void fixRight() {
     digitalWrite(motor_LA_IP, HIGH);
 }
 
-void pegarArvore(){
+//Pega a arvore e solta
+void ArvoreG(){
+    acionarServo(M, 10);
+    acionarServo(C, 35);
+    acionarServo(O, 0);
+    acionarServo(C, 45);
+    acionarServo(M, 45);
+    acionarServo(G, 180);
+    // acionarServo(B, ADEFINIR);
+    acionarServo(C, 140);
+    //Talvez o robô tenha que andar para trás
+    acionarServo(C, 90);
+    acionarServo(M, 10);
+    acionarServo(C, 60);
+    acionarServo(M, 50);
+    acionarServo(G, 0);
+    acionarServo(M, 10);
+    acionarServo(C, 120);
+}
+
+//Pega a arvore e solta
+void arvoreP2(){
+    // acionarServo(B, A DEFINIR)
+    acionarServo(C, 70);
+    acionarServo(M, 75);
+    acionarServo(G, 180);
+    acionarServo(M, 10);
+    acionarServo(C, 70);
+    // acionarServo(B, A DEFINIR)
+    acionarServo(M, 70);
+    acionarServo(G, 0);
+}
+
+void arvoreP(){
 
 }
 
-void pegarArvore2(){
-
-}
-
-void descerArvoreG(){
-
-}
-
-void descerArvoreG2(){
-
-}
-
-void descerArvoreP(){
-
-}
-
-void descerArvoreP2(){
+void arvoreG2(){
 
 }
 
@@ -703,9 +778,9 @@ void fixrote() {
 
 //Ha a possibilidade de isto estar errado
 void arvoreG(){
-    if(ultra1 <= X && ultra2 <= X){
+    if(mediaMovelUltrassom[0] <= X && mediaMovelUltrassom[1] <= X){
         stopMotors();
-        pegarArvore();
+        arvoreG();
         delay(2000);
     //  while (true)
       //  {
@@ -713,9 +788,9 @@ void arvoreG(){
             //Aqui
             //Se o carro estiver andando torto colocar o fixrote em cima
             //if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
-                stopMotors();
-                descerArvoreG();
-                delay(1000);
+                // stopMotors();
+                // descerArvoreG();
+                // delay(1000);
                 //break;
             //}
            // fixrote();
@@ -729,12 +804,10 @@ void arvoreG(){
             //Automaticamente não há necessecidade de verificar se é pequena ou grande, poi uma já terá sido eliminada(enfiada no lugar certo)
             //if(Ultra1 <= X && Ultra2 > X){
                 stopMotors();
-                pegarArvore2();
+                arvoreP2();
                 delay(2000);
                 //moveForward();
                 //if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
-                    descerArvoreP2();
-                    delay(2000);
                   //  break;
               //  }
             // }
@@ -745,9 +818,9 @@ void arvoreG(){
 }
 
 void arvoreP(){
-    if(ultra1 <= X && ultra2 > X){
+    if(mediaMovelUltrassom[0] <= X && mediaMovelUltrassom[1] > X){
         stopMotors();
-        pegarArvore();
+        arvoreP();
         delay(2000);
        // while (true)
     //  {
@@ -755,9 +828,9 @@ void arvoreP(){
             //Aqui
             //Se o carro estiver andando torto colocar o fixrote em cima
             //if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
-                stopMotors();
-                descerArvoreP();
-                delay(1000);
+                // stopMotors();
+                // descerArvoreP();
+                // delay(1000);
                // break;
           //  }
           //  fixrote();
@@ -771,12 +844,12 @@ void arvoreP(){
             //Automaticamente não há necessecidade de verificar se é pequena ou grande, poi uma já terá sido eliminada(enfiada no lugar certo)
             //if(Ultra1 <= X && Ultra2 > X){
                 //stopMotors();
-                pegarArvore2();
+                arvoreG2();
                 delay(2000);
                 //moveForward();
                // if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
-                    descerArvoreG2();
-                    delay(2000);
+                    // descerArvoreG2();
+                    // delay(2000);
                //     break;
               //  }
             // }
@@ -796,8 +869,8 @@ void setup(){
     setLDR();
     //setMotors();
     // Criar as tarefas
-    xTaskCreatePinnedToCore(mediaUltrassomTask, "Media Ultrassom", 2048, NULL, 1, NULL, 1); // Núcleo 1
-    xTaskCreatePinnedToCore(mediaLDRTask, "Media LDR", 2048, NULL, 1, NULL, 0); // Núcleo 0
+    //xTaskCreatePinnedToCore(mediaUltrassomTask, "Media Ultrassom", 2048, NULL, 1, NULL, 1); // Núcleo 1
+    xTaskCreatePinnedToCore(mediaLDRTask, "Media LDR", 2048, NULL, 1, NULL, 1); // Núcleo 0
     delay(100);
     Ne();
 }
