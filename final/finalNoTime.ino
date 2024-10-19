@@ -25,14 +25,14 @@
 
 /*Definição sensor ultrassônico*/
 #define triggerPin 19
-#define echoPin 18
-#define echoPin2 34
+#define echoPin 36
+#define echoPin2 18
 #define QTD_ULTRA 2
 
 //Definição do Pino do LDR
-#define pinLDR0 39
-#define pinLDR1 35
-#define pinLDR2 36
+#define pinLDR0 36
+#define pinLDR1 39  
+#define pinLDR2 34
 #define QTD_LDR 3
 
 /* Definição dos Pinos do seguidor de linha */
@@ -72,10 +72,10 @@ enum ServoNames {
 const byte pinUltra[] ={echoPin, echoPin2};
 
 const byte pinLDRS[] = {pinLDR0, pinLDR1, pinLDR2};
-const byte ColorsLDR[] = {0,0,0};
+byte ColorLDR[] = {0,0,0};
 const int QTD_LEITURA_LDR = 100;
 
-const dAG = 0;
+const int dAG = 19;
 
 const byte pinServos[qtdServos] = {servo_Pino_A, servo_Pino_B, servo_Pino_C, servo_Pino_D, servo_Pino_E};
 
@@ -246,7 +246,7 @@ void setLine() {
 */
 void setUltra(){
     pinMode(triggerPin, OUTPUT); // Clear the trigger
-    for (int x == 0; x < QTD_ULTRA, x++){
+    for (int x = 0; x < QTD_ULTRA; x++){
         pinMode(pinUltra[x], INPUT);
     }
 }
@@ -294,7 +294,7 @@ void mediaUltrassomTask(void *pvParameters) {
         for (int x = 0; x < QTD_ULTRA; x++){
             float acumulado = 0;
             for (int i = 0; i < 10; i++) {
-                cm = 0.01723 * readUltrasonicDistance([x]); // Converte a duração para centímetros
+                cm = 0.01723 * readUltrasonicDistance(x); // Converte a duração para centímetros
                 acumulado += cm; // Soma o valor lido
                 delay(10); // Aguarda um pouco entre as leituras
             }
@@ -326,17 +326,17 @@ void mediaLDRTask(void *pvParameters) {
             Serial.println(mediaMovelLDR[x]);
             delay(1);
         }
-        ColorLDR();
+        ColorsLDR();
         vTaskDelay(500 / portTICK_PERIOD_MS); // Aguarda 1 segundo antes da próxima execução
   }
 }
 
-void ColorLDR(){
+void ColorsLDR(){
         for (int x = 0; x < QTD_LDR; x++){
             if (mediaMovelLDR[x] >= 3940){
-                ColorsLDR[x] = 1
+                ColorLDR[x] = 1;
             } else if (mediaMovelLDR[x] <= 3900) {
-                ColorsLDR[x] = 0
+                ColorLDR[x] = 0;
             }
         }
 }
@@ -762,13 +762,13 @@ void arvoreP2(){
     acionarServo(G, 0);
 }
 
-void arvoreP(){
+// void arvoreP(){
 
-}
+// }
 
-void arvoreG2(){
+// void arvoreG2(){
 
-}
+// }
 
 void fixrote() {
     if (ColorLDR[0] == 1 && ColorLDR[2] == 0) {
@@ -846,7 +846,7 @@ void arvoreP(){
             //Automaticamente não há necessecidade de verificar se é pequena ou grande, poi uma já terá sido eliminada(enfiada no lugar certo)
             //if(Ultra1 <= X && Ultra2 > X){
                 //stopMotors();
-                arvoreG2();
+               // arvoreG2();
                 delay(2000);
                 //moveForward();
                // if(LDR1 == 1 && LDR2 == 1 && LDR3 == 1){
@@ -878,7 +878,7 @@ void setup(){
 }
 
 void loop(){
-    if(ColorLDR[0] == 0 && ColorLDR[1] == 1 && ColorLDR[2] ==0){
+    if(ColorLDR[0] == 0 && ColorLDR[1] == 1 && ColorLDR[2] == 0){
         stopCar(200);
         while (true)
         {
@@ -896,7 +896,7 @@ void loop(){
             if(ColorLDR[0] == 0 && ColorLDR[1] == 1 && ColorLDR[2] == 1){
                 stopCar(200);
                 turnRight();
-                if(LDR1 == 0 && LDR2 == 1 && LDR3 == 0){
+                if(ColorLDR[0] == 0 && ColorLDR[1] == 1 && ColorLDR[3] == 0){
                     stopCar(200);
                     break;
                 }
