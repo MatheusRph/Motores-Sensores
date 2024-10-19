@@ -75,6 +75,8 @@ const byte pinLDRS[] = {pinLDR0, pinLDR1, pinLDR2};
 const byte ColorsLDR[] = {0,0,0};
 const int QTD_LEITURA_LDR = 100;
 
+const dAG = 0;
+
 const byte pinServos[qtdServos] = {servo_Pino_A, servo_Pino_B, servo_Pino_C, servo_Pino_D, servo_Pino_E};
 
 /*Constantes de velocidade*/
@@ -769,16 +771,16 @@ void arvoreG2(){
 }
 
 void fixrote() {
-    if (LDR1 == 1 && LDR3 == 0) {
+    if (ColorLDR[0] == 1 && ColorLDR[2] == 0) {
         fixRight(); // Corrige à direita
-    } else if (LDR1 == 0 && LDR3 == 1) {
+    } else if (ColorLDR[0] == 0 && ColorLDR[2] == 1) {
         fixLeft(); // Corrige à esquerda
     }
 }
 
 //Ha a possibilidade de isto estar errado
 void arvoreG(){
-    if(mediaMovelUltrassom[0] <= X && mediaMovelUltrassom[1] <= X){
+    if(mediaMovelUltrassom[0] <= dAG && mediaMovelUltrassom[1] <= dAG){
         stopMotors();
         arvoreG();
         delay(2000);
@@ -818,7 +820,7 @@ void arvoreG(){
 }
 
 void arvoreP(){
-    if(mediaMovelUltrassom[0] <= X && mediaMovelUltrassom[1] > X){
+    if(mediaMovelUltrassom[0] <= dAG && mediaMovelUltrassom[1] > dAG){
         stopMotors();
         arvoreP();
         delay(2000);
@@ -876,7 +878,7 @@ void setup(){
 }
 
 void loop(){
-    if(LDR1 == 0 && LDR2 == 1 && LDR3 ==0){
+    if(ColorLDR[0] == 0 && ColorLDR[1] == 1 && ColorLDR[2] ==0){
         stopCar(200);
         while (true)
         {
@@ -891,7 +893,7 @@ void loop(){
         while (true)
         {
             moveBackward();
-            if(LDR1 == 0 && LDR2 == 1 && LDR3 == 1){
+            if(ColorLDR[0] == 0 && ColorLDR[1] == 1 && ColorLDR[2] == 1){
                 stopCar(200);
                 turnRight();
                 if(LDR1 == 0 && LDR2 == 1 && LDR3 == 0){
@@ -904,7 +906,7 @@ void loop(){
         while (true)
         {
             moveForward();
-            if(LDR1 == 1 && LDR 2 == 1 && LDR3 == 1){
+            if(ColorLDR[0] == 1 && ColorLDR[1] == 1 && ColorLDR[2] == 1){
                 stopCar(200);
                 break;
             }
