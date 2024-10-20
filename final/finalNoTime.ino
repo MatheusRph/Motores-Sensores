@@ -174,6 +174,7 @@ void acionarServo(ServoNames nomeServo, int angulo) {
 }
 
 void servo360(int angulo, unsigned int time) {
+    //servo360(0, 86, 1900); Gira em 90 graus para a direita
     //servo360(0, 100, 1900); Gira em 90 graus para a esquerda
   if (0 >= 0 && 0 < qtdServos) {
     servos[0].write(angulo); // Aciona o servo no ângulo desejado
