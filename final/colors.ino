@@ -4,14 +4,14 @@
 // Cria instâncias do SoftWire para cada sensor
 
 // Cria instâncias dos sensores usando os barramentos SoftWire
-//Adafruit_TCS34725softi2c  colorSensor = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X, &wire1);
+//Adafruit_TCS34725softi2c  tcsG = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X, &wire1);
 //Adafruit_TCS34725softi2c  tcs2 = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X, &wire2);
 
 // #include <Wire.h>
 // #include <Adafruit_TCS34725.h>
 // #include <cmath> // Adicione esta linha para usar sqrt
 
-Adafruit_TCS34725 colorSensor = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X); //240 1x
+Adafruit_TCS34725 tcsG = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X); //240 1x
 
 int calibR = 0;
 int calibG = 0;
@@ -30,7 +30,7 @@ int margem = 50;
 String ColorTcs;
 
 void checkSensorsColor() {
-    if (colorSensor.begin()) {
+    if (tcsG.begin()) {
         Serial.println("Sensor frente encontrado");
     } else {
         Serial.println("Sensor frente não encontrado");
@@ -48,17 +48,17 @@ void calibratorColors() {
     delay(3000);
     uint16_t r, g, b, c;
 
-    colorSensor.getRawData(&r, &g, &b, &c);
+    tcsG.getRawData(&r, &g, &b, &c);
 
     if (c < 750){
-      colorSensor = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_60MS, TCS34725_GAIN_4X); //240 1x
+      tcsG = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_60MS, TCS34725_GAIN_4X); //240 1x
     }
 
 
     int r10 = 0, g10 = 0, b10 = 0, c10 = 0;
 
     for (int i = 0; i < 10; i++) {
-        colorSensor.getRawData(&r, &g, &b, &c);
+        tcsG.getRawData(&r, &g, &b, &c);
         r10 += r;
         g10 += g;
         b10 += b;
@@ -79,7 +79,7 @@ void calibratorColors() {
     // Serial.print(", C=");
     // Serial.print(c);
   
-    delay(3000);
+    delay(100);
     calibR = r / 2.26;
     calibG = g / 2.4;
     calibB = b / 2.4;
@@ -137,7 +137,7 @@ void identifyColor(uint16_t rp, uint16_t gp, uint16_t bp, uint16_t cp, String &c
 
 void readTcs() {
     uint16_t r, g, b, c;
-    colorSensor.getRawData(&r, &g, &b, &c);
+    tcsG.getRawData(&r, &g, &b, &c);
     identifyColor(r, g, b, c, ColorTcs);
 
     Serial.print("Cores de leitura R=");
