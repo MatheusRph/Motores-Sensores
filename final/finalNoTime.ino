@@ -35,11 +35,11 @@
 #define pinLDR2 34
 #define QTD_LDR 3
 
-/* Definição dos Pinos do seguidor de linha */
-#define pinLine1 36 // Pino do seguidor de linha A
-#define pinLine2 35 // Pino do seguidor de linha B
-#define pinLine3 39 // Pino do seguidor de linha C
-#define qtdLine 3    // Informa a quantidade de sensores preto e branco serão usados
+// /* Definição dos Pinos do seguidor de linha */
+// #define pinLine1 36 // Pino do seguidor de linha A
+// #define pinLine2 35 // Pino do seguidor de linha B
+// #define pinLine3 39 // Pino do seguidor de linha C
+// #define qtdLine 3    // Informa a quantidade de sensores preto e branco serão usados
 
 /*Definição dos Servos*/
 #define servo_Pino_A 32 // Pino do Servo A
@@ -143,11 +143,11 @@ void setServos(){
    // servos[x].write(90);//Move o servo para a posição inicial de 90 .
     delay(timeXV);//Tempo de espera de 15 segundos
     }
-  servos[32].write(90); // Move o servo para o ângulo especificado
-  servos[33].write(50); // Move o servo para o ângulo especificado
-  servos[25].write(170); // Move o servo para o ângulo especificado
-  servos[26].write(90); // Move o servo para o ângulo especificado
-  servos[5].write(0); // Move o servo para o ângulo especificado
+//   servos[32].write(90); // Move o servo para o ângulo especificado
+//   servos[33].write(50); // Move o servo para o ângulo especificado
+//   servos[25].write(170); // Move o servo para o ângulo especificado
+//   servos[26].write(90); // Move o servo para o ângulo especificado
+//   servos[5].write(0); // Move o servo para o ângulo especificado
 }
 
 /*
@@ -302,16 +302,16 @@ void mediaUltrassomTask(void *pvParameters) {
         for (int x = 0; x < QTD_ULTRA; x++){
             float acumulado = 0;
             for (int i = 0; i < 10; i++) {
-                cm = 0.01723 * readUltrasonicDistance(x); // Converte a duração para centímetros
+                cm = 0.01723 * readUltrasonicDistance(pinUltra[x]); // Converte a duração para centímetros
                 acumulado += cm; // Soma o valor lido
                 delay(10); // Aguarda um pouco entre as leituras
             }
             mediaMovelUltrassom[x] = acumulado / 10.0; // Retorna a média
             Serial.print("Distancia em cm: ");
             Serial.println(mediaMovelUltrassom[x]); 
-            if (mediaMovelUltrassom[x] >= 1204){
-                vTaskDelete(NULL); // Encerra a tarefa
-            }
+            // if (mediaMovelUltrassom[x] >= 1204){
+            //     vTaskDelete(NULL); // Encerra a tarefa
+            // }
             vTaskDelay(1000 / portTICK_PERIOD_MS); // Aguarda 1 segundo antes da próxima execução
         }
     }
@@ -678,7 +678,7 @@ void So(/*unsigned int timeMotor*/) {
 
 
 //Função que fará o carrinho andar para Nordeste
-void Ne(){
+void Ne(unsigned int timeMotor){
   //stopMotors();
     // Liga os motores adequadamente para mover para sudoeste
     for (int speed = minSpeed; speed <= maxSpeed; speed++) {
@@ -686,6 +686,8 @@ void Ne(){
         analogWrite(motor_RB_IP, speed); // Ativa no sentido anti-horário
         delay(rampTime / maxSpeed);
     }
+
+    delay(timeMotor); // Aguarda pelo tempo especificado antes de continuar
 
     for (int speed = maxSpeed; speed >= minSpeed; speed--) {
         analogWrite(motor_LA_IP, speed); // Ativa no sentido anti-horário
@@ -882,7 +884,8 @@ void setup(){
     //xTaskCreatePinnedToCore(mediaUltrassomTask, "Media Ultrassom", 2048, NULL, 1, NULL, 1); // Núcleo 1
     xTaskCreatePinnedToCore(mediaLDRTask, "Media LDR", 2048, NULL, 1, NULL, 1); // Núcleo 0
     delay(100);
-    Ne();
+    Ne(200);
+    stopCar(6000);
 }
 
 void loop(){
