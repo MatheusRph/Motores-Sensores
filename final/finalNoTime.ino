@@ -252,25 +252,33 @@ void setLine() {
     Função: setUltra
     Descrição: Configura os pinos do sensor ultrassônico
 */
+// void setUltra(){
+//     pinMode(triggerPin, OUTPUT); // Clear the trigger
+//     for (int x = 0; x < QTD_ULTRA; x++){
+//         pinMode(pinUltra[x], INPUT);
+//     }
+// }
+
 void setUltra(){
-    pinMode(triggerPin, OUTPUT); // Clear the trigger
-    for (int x = 0; x < QTD_ULTRA; x++){
+    for( int x = 0; x < QTD_LDR; x++){
         pinMode(pinUltra[x], INPUT);
+        delay(1);
     }
+    pinMode(triggerPin, OUTPUT); // Clear the trigger
 }
 
 /*
     Função: readUltrasonicDistance
     Descrição: Se os valores do pino echo do sensor ultrassônico 
 */
-long readUltrasonicDistance(int numUltra)
+long readUltrasonicDistance(int echo)
 {
     digitalWrite(triggerPin, LOW);
     delayMicroseconds(2);
     digitalWrite(triggerPin, HIGH);
     delayMicroseconds(10);
     digitalWrite(triggerPin, LOW);
-    return pulseIn(numUltra, HIGH);
+    return pulseIn(echo, HIGH);
 }
 /*
 float mediaUltrassom() {
@@ -304,7 +312,7 @@ void mediaUltrassomTask(void *pvParameters) {
             for (int i = 0; i < 10; i++) {
                 cm = 0.01723 * readUltrasonicDistance(pinUltra[x]); // Converte a duração para centímetros
                 acumulado += cm; // Soma o valor lido
-                delay(10); // Aguarda um pouco entre as leituras
+                delay(15); // Aguarda um pouco entre as leituras
             }
             mediaMovelUltrassom[x] = acumulado / 10.0; // Retorna a média
             Serial.print("Distancia em cm: ");
