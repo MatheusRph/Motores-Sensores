@@ -173,12 +173,13 @@ void acionarServo(ServoNames nomeServo, int angulo) {
     delay(400);
 }
 
-void servo360(int time, int angulo){
-    int numeroServo = static_cast<int>(B); // Converte para inteiro
-    servo[numeroServo].write(angulo);
-    delay(time);
-    servo[numeroServo].write(90);
-    delay(2);
+void servo360(int angulo, unsigned int time) {
+    //servo360(0, 100, 1900); Gira em 90 graus para a esquerda
+  if (0 >= 0 && 0 < qtdServos) {
+    servos[0].write(angulo); // Aciona o servo no ângulo desejado
+    delay(time); // Espera o tempo especificado
+    servos[0].write(90); // Retorna o servo para a posição neutra
+  }
 }
 
 /*
