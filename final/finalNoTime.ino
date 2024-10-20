@@ -35,9 +35,9 @@
 #define QTD_RULTRA 5
 
 //Definição do Pino do LDR
-#define pinLDR0 36
-#define pinLDR1 39  
-#define pinLDR2 34
+#define pinLDR0 34 //lilas
+#define pinLDR1 39  //azul
+#define pinLDR2 35 //cinza
 #define QTD_LDR 3
 
 // /* Definição dos Pinos do seguidor de linha */
@@ -51,9 +51,14 @@
 #define servo_Pino_B 33 // Pino do Servo B
 #define servo_Pino_C 25 // Pino do Servo C
 #define servo_Pino_D 26 // Pino do Servo D
-#define servo_Pino_E 5  // Pino de Servo E
+#define servo_Pino_E 5 // Pino do Servo E (Novo Servo)
+#define qtdServos 5 // Aumenta a quantidade de Servos para 5
 
-#define qtdServos 5 //Informa a quantidade de Servos que serão ligados em cascata
+#define pos0 90
+#define pos1 150
+#define pos2 10
+#define pos3 190
+#define pos4 90
 
 /*Definição do arduino em geral*/
 #define D_in 16 //Nomeia o pino 6 do Arduino
@@ -81,6 +86,8 @@ byte ColorLDR[] = {0,0,0};
 const int QTD_LEITURA_LDR = 100;
 
 const int dAG = 25;
+
+int posIniciais[] = {pos0, pos1, pos2, pos3, pos4};
 
 const byte pinServos[qtdServos] = {servo_Pino_A, servo_Pino_B, servo_Pino_C, servo_Pino_D, servo_Pino_E};
 
@@ -124,7 +131,7 @@ int minSpeed = 65;
 int maxSpeed = 85;
 
 /*Variáveis sobre servo*/
-ServoEasing servos[qtdServos], servo_A, servo_B, servo_C, servo_D, servo_E;
+ServoEasing servos[qtdServos]; // Ajustado para 5 servos
 
 // Variáveis para definição da velocidade dos motores
 byte velocityMotorR = 200; // Velocidade dos motores do lado Direito
@@ -295,20 +302,15 @@ void readTcs() {
     Serial.println("Cor detectada: " + ColorTcs);
 }
 
-void setServos(){
-  for (int x = 0; x < qtdServos; x++){
-    pinMode(pinServos[x], OUTPUT);//Define pino servo e saída de energia 
-    servos[x].attach(pinServos[x]);// Conecta o servo ao pino definido no array pinServos.
-    servos[x].setEasingType(EASE_CUBIC_IN_OUT);// Define o tipo de suavização do movimento do servo
-    servos[x].setSpeed(40);//Estabelece a velocidade do movimento do servo.
-   // servos[x].write(90);//Move o servo para a posição inicial de 90 .
-    delay(timeXV);//Tempo de espera de 15 segundos
-    }
-//   servos[32].write(90); // Move o servo para o ângulo especificado
-//   servos[33].write(50); // Move o servo para o ângulo especificado
-//   servos[25].write(170); // Move o servo para o ângulo especificado
-//   servos[26].write(90); // Move o servo para o ângulo especificado
-//   servos[5].write(0); // Move o servo para o ângulo especificado
+void setServos() {
+  for (int x = 0; x < qtdServos; x++) {
+    pinMode(pinServos[x], OUTPUT);
+    servos[x].attach(pinServos[x]);
+    servos[x].setEasingType(EASE_CUBIC_IN_OUT);
+    servos[x].setSpeed(40);
+    //servos[x].write(posIniciais[x]); // Usa a nova posição inicial para o Servo E
+    delay(50);
+  }
 }
 
 /*
@@ -514,10 +516,15 @@ void mediaLDRTask(void *pvParameters) {
 
 void ColorsLDR(){
         for (int x = 0; x < QTD_LDR; x++){
-            if (mediaMovelLDR[x] >= 3940){
+            if (mediaMovelLDR[x] >= 3350){
                 ColorLDR[x] = 1;
-            } else if (mediaMovelLDR[x] <= 3900) {
+            } else if (mediaMovelLDR[x] < 3350) {
                 ColorLDR[x] = 0;
+            }
+            else if (mediaMovelLDR[1] <= 2745){
+                ColorLDR[1] = 1;
+            } else if(mediaMovelLDR[1] < 2734){
+                ColorLDR[1] = 0;
             }
         }
 }
@@ -1050,11 +1057,23 @@ void setup(){
       delay(10);
     }
     setUltra();
-    setServos(); //configura os servos
+    delay(100);
+    setServos(); //configura os servo
+    acionarServo(B, 90); // Servo A inicia em 90 graus
+    delay(2000);
+    acionarServo(O, pos1);
+    delay(100);
+    acionarServo(C, pos2);
+    delay(100);
+    acionarServo(M, pos3);
+    delay(100);
+    acionarServo(G, pos4); // Aciona o Servo E na posição inicial
+    delay(100);
+    delay(100);
     setLDR();
     //setMotors();
     // Criar as tarefas
-    //xTaskCreatePinnedToCore(mediaUltrassomTask, "Media Ultrassom", 2048, NULL, 1, NULL, 1); // Núcleo 1
+    xTaskCreatePinnedToCore(mediaUltrassomTask, "Media Ultrassom", 2048, NULL, 1, NULL, 1); // Núcleo 1
     xTaskCreatePinnedToCore(mediaLDRTask, "Media LDR", 2048, NULL, 1, NULL, 1); // Núcleo 0
     delay(100);
     Ne(200);
