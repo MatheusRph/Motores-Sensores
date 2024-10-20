@@ -32,6 +32,7 @@
 #define echoPin 36
 #define echoPin2 18
 #define QTD_ULTRA 2
+#define QTD_RULTRA 5
 
 //Definição do Pino do LDR
 #define pinLDR0 36
@@ -79,7 +80,7 @@ const byte pinLDRS[] = {pinLDR0, pinLDR1, pinLDR2};
 byte ColorLDR[] = {0,0,0};
 const int QTD_LEITURA_LDR = 100;
 
-const int dAG = 19;
+const int dAG = 25;
 
 const byte pinServos[qtdServos] = {servo_Pino_A, servo_Pino_B, servo_Pino_C, servo_Pino_D, servo_Pino_E};
 
@@ -471,17 +472,19 @@ void mediaUltrassomTask(void *pvParameters) {
     while (true) {
         for (int x = 0; x < QTD_ULTRA; x++){
             float acumulado = 0;
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < QTD_RULTRA; i++) {
                 cm = 0.01723 * readUltrasonicDistance(pinUltra[x]); // Converte a duração para centímetros
                 acumulado += cm; // Soma o valor lido
                 delay(15); // Aguarda um pouco entre as leituras
             }
-            mediaMovelUltrassom[x] = acumulado / 10.0; // Retorna a média
-            Serial.print("Distancia em cm: ");
-            Serial.println(mediaMovelUltrassom[x]); 
-            // if (mediaMovelUltrassom[x] >= 1204){
-            //     vTaskDelete(NULL); // Encerra a tarefa
-            // }
+            mediaMovelUltrassom[x] = acumulado / QTD_RULTRA; // Retorna a média
+            Serial.print("Distancia em cm ");
+            Serial.print(x);
+            Serial.print(" : ");
+            Serial.println(mediaMovelLDR[x]); 
+            if (mediaMovelUltrassom[x] >= 500){
+                mediaMovelUltrassom[x] = 500;
+            }
             vTaskDelay(1000 / portTICK_PERIOD_MS); // Aguarda 1 segundo antes da próxima execução
         }
     }
