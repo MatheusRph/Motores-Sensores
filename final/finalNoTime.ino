@@ -139,7 +139,7 @@ void setServos(){
     pinMode(pinServos[x], OUTPUT);//Define pino servo e saída de energia 
     servos[x].attach(pinServos[x]);// Conecta o servo ao pino definido no array pinServos.
     servos[x].setEasingType(EASE_CUBIC_IN_OUT);// Define o tipo de suavização do movimento do servo
-    servos[x].setSpeed(70);//Estabelece a velocidade do movimento do servo.
+    servos[x].setSpeed(40);//Estabelece a velocidade do movimento do servo.
    // servos[x].write(90);//Move o servo para a posição inicial de 90 .
     delay(timeXV);//Tempo de espera de 15 segundos
     }
@@ -171,6 +171,14 @@ void acionarServo(ServoNames nomeServo, int angulo) {
         Serial.println("Número de servo inválido!"); // Imprime mensagem de erro no console
     }
     delay(400);
+}
+
+void servo360(int time, int angulo){
+    int numeroServo = static_cast<int>(B); // Converte para inteiro
+    servo[numeroServo].write(angulo);
+    delay(time);
+    servo[numeroServo].write(90);
+    delay(2);
 }
 
 /*
