@@ -6,8 +6,8 @@ SoftWire wire1 = SoftWire();
 SoftWire wire2 = SoftWire();
 
 // Cria instâncias dos sensores usando os barramentos SoftWire
-Adafruit_TCS34725softi2c  colorSensor = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X, &wire1);
-Adafruit_TCS34725softi2c  tcs2 = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X, &wire2);
+Adafruit_TCS34725softi2c  colorSensor = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X, wire1);
+Adafruit_TCS34725softi2c  tcs2 = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X, wire2);
 
 // #include <Wire.h>
 // #include <Adafruit_TCS34725.h>
